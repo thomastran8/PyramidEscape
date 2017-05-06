@@ -10,6 +10,9 @@ public class PlayerMovement : MonoBehaviour {
 	// Movement control
 	private float movementSpeed = 400.0f;
 	private float jumpSpeed = 100.0f;
+    private float sphereCastDist = 0.7f;
+    private float spherecastSize = 0.4f;
+    private bool isGrounded = false;
 
     // Movement feel
     private Vector3 movement;
@@ -17,7 +20,6 @@ public class PlayerMovement : MonoBehaviour {
     private int bobSpeed = 10;
     float startPositionY;
     public Transform camPosition;
-    private bool isGrounded = false;
     private float movementTime;
 
     // Player look
@@ -99,7 +101,8 @@ public class PlayerMovement : MonoBehaviour {
         // Player jumps only on collision
         if (collision != null)
         {
-            if (Input.GetButton("Jump"))
+            Ray groundRay = new Ray(transform.position, Vector3.down);
+            if (Input.GetButton("Jump") && Physics.SphereCast(groundRay, spherecastSize, sphereCastDist))
             {
                 playerRB.AddForce(Vector3.up * jumpSpeed);
             }
@@ -109,7 +112,8 @@ public class PlayerMovement : MonoBehaviour {
 
     void PlayerBob()
     {
-        if (isGrounded && movement.magnitude >= 5.0f)
+        Ray groundRay = new Ray(transform.position, Vector3.down);
+        if (isGrounded && Physics.SphereCast(groundRay, spherecastSize, sphereCastDist) && movement.magnitude >= 5.0f)
         {
             startPositionY = camPosition.position.y;
             movementTime += Time.deltaTime;
