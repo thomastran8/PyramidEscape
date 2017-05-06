@@ -17,6 +17,9 @@ public class PlayerMovement : MonoBehaviour {
     private float rotY = 0.0f;
     private float rotX = 0.0f;
 
+	void Awake() {
+		GameManager.player = this.gameObject;
+	}
     // Use this for initialization
     void Start () {
         playerRB = GetComponent<Rigidbody>();
