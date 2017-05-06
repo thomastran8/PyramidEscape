@@ -8,11 +8,20 @@ public class PlayerMovement : MonoBehaviour {
 	private Camera playerCam;
 
 	// Movement control
-	private float movementSpeed = 10.0f;
+	private float movementSpeed = 400.0f;
 	private float jumpSpeed = 100.0f;
 
-	// Player look
-	private float mouseSensitivity = 100.0f;
+    // Movement feel
+    private Vector3 movement;
+    private float bobStrength = 0.2f;
+    private int bobSpeed = 10;
+    float startPositionY;
+    public Transform camPosition;
+    private bool isGrounded = false;
+    private float movementTime;
+
+    // Player look
+    private float mouseSensitivity = 100.0f;
 	private float clampAngle = 80.0f;
 	private float rotY = 0.0f;
 	private float rotX = 0.0f;
@@ -26,7 +35,7 @@ public class PlayerMovement : MonoBehaviour {
 		Vector3 rot = transform.localRotation.eulerAngles;
 		rotY = rot.y;
 		rotX = rot.x;
-	}
+    }
 
 	// Update is called once per frame
 	void Update ()
@@ -39,6 +48,7 @@ public class PlayerMovement : MonoBehaviour {
 	{
 		PlayerMove();
         PlayerLook();
+        PlayerBob();
     }
 
     void OnCollisionStay(Collision collision)
@@ -46,15 +56,19 @@ public class PlayerMovement : MonoBehaviour {
         PlayerJump(collision);
     }
 
+    void OnCollisionExit()
+    {
+        isGrounded = false;
+    }
+
     void PlayerMove()
 	{
 		float forwardMovement = Input.GetAxis("Vertical");
 		float sideMovement = Input.GetAxis("Horizontal");
-		Vector3 movement;
 
 		movement = playerCam.transform.forward * forwardMovement + playerCam.transform.right * sideMovement;
         movement = Vector3.ClampMagnitude(movement, 1.0f); // Keep speed consistent even diagonally
-        movement = movement * movementSpeed;
+        movement = movement * movementSpeed * Time.deltaTime;
 		movement.y = playerRB.velocity.y;   // Restore gravity to movement
 
 		// Apply movement
@@ -89,6 +103,17 @@ public class PlayerMovement : MonoBehaviour {
             {
                 playerRB.AddForce(Vector3.up * jumpSpeed);
             }
+            isGrounded = true;
+        }
+    }
+
+    void PlayerBob()
+    {
+        if (isGrounded && movement.magnitude >= 5.0f)
+        {
+            startPositionY = camPosition.position.y;
+            movementTime += Time.deltaTime;
+            playerCam.transform.position = new Vector3(transform.position.x, startPositionY + Mathf.Sin(movementTime * bobSpeed) * bobStrength, playerCam.transform.position.z);
         }
     }
 }
