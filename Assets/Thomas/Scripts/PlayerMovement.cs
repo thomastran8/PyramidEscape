@@ -10,8 +10,6 @@ public class PlayerMovement : MonoBehaviour {
 	// Movement control
 	private float movementSpeed = 10.0f;
 	private float jumpSpeed = 100.0f;
-	private float sphereCastDist = 0.7f;
-	private float spherecastSize = 0.4f;
 
 	// Player look
 	private float mouseSensitivity = 100.0f;
@@ -43,11 +41,6 @@ public class PlayerMovement : MonoBehaviour {
         PlayerLook();
     }
 
-	void LateUpdate()
-	{
-		
-	}
-
     void OnCollisionStay(Collision collision)
     {
         PlayerJump(collision);
@@ -60,7 +53,8 @@ public class PlayerMovement : MonoBehaviour {
 		Vector3 movement;
 
 		movement = playerCam.transform.forward * forwardMovement + playerCam.transform.right * sideMovement;
-		movement = movement.normalized * movementSpeed; // Make vector in magnitude of 1 and apply speed
+        movement = Vector3.ClampMagnitude(movement, 1.0f); // Keep speed consistent even diagonally
+        movement = movement * movementSpeed;
 		movement.y = playerRB.velocity.y;   // Restore gravity to movement
 
 		// Apply movement
@@ -88,6 +82,7 @@ public class PlayerMovement : MonoBehaviour {
 
 	void PlayerJump(Collision collision)
 	{
+        // Player jumps only on collision
         if (collision != null)
         {
             if (Input.GetButton("Jump"))
