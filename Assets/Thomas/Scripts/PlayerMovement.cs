@@ -9,13 +9,13 @@ public class PlayerMovement : MonoBehaviour {
 
 	// Movement control
 	private float movementSpeed = 10.0f;
-	private float jumpSpeed = 300.0f;
+	private float jumpSpeed = 100.0f;
 	private float sphereCastDist = 0.7f;
 	private float spherecastSize = 0.4f;
 
 	// Player look
-	public float mouseSensitivity = 100.0f;
-	public float clampAngle = 80.0f;
+	private float mouseSensitivity = 100.0f;
+	private float clampAngle = 80.0f;
 	private float rotY = 0.0f;
 	private float rotX = 0.0f;
 
@@ -40,15 +40,20 @@ public class PlayerMovement : MonoBehaviour {
 	void FixedUpdate()
 	{
 		PlayerMove();
-		PlayerJump();
-	}
+        PlayerLook();
+    }
 
 	void LateUpdate()
 	{
-		PlayerLook();
+		
 	}
 
-	void PlayerMove()
+    void OnCollisionStay(Collision collision)
+    {
+        PlayerJump(collision);
+    }
+
+    void PlayerMove()
 	{
 		float forwardMovement = Input.GetAxis("Vertical");
 		float sideMovement = Input.GetAxis("Horizontal");
@@ -81,15 +86,14 @@ public class PlayerMovement : MonoBehaviour {
 		playerCam.transform.rotation = localRotation;
 	}
 
-	void PlayerJump()
+	void PlayerJump(Collision collision)
 	{
-		Ray groundRay = new Ray(transform.position, Vector3.down);
-		if (Physics.SphereCast(groundRay, spherecastSize, sphereCastDist))
-		{
-			if (Input.GetButton("Jump"))
-			{
-				playerRB.AddForce(Vector3.up * jumpSpeed);
-			}
-		}
-	}
+        if (collision != null)
+        {
+            if (Input.GetButton("Jump"))
+            {
+                playerRB.AddForce(Vector3.up * jumpSpeed);
+            }
+        }
+    }
 }
