@@ -7,9 +7,10 @@ public class PlayerMovement : MonoBehaviour {
     private Rigidbody playerRB;
     private Camera playerCam;
 
-    // Movement speed
+    // Movement control
     private float movementSpeed = 10.0f;
-    private float jumpSpeed = 100.0f;
+    private float jumpSpeed = 300.0f;
+    private float jumpHeight = 1.0f;
 
     // Player look
     public float mouseSensitivity = 100.0f;
@@ -81,9 +82,13 @@ public class PlayerMovement : MonoBehaviour {
 
     void PlayerJump()
     {
-        if (Input.GetButton("Jump"))
+        Debug.DrawRay(transform.position, Vector3.down * jumpHeight, Color.red);
+        if (Physics.Raycast(transform.position, Vector3.down, jumpHeight))
         {
-            playerRB.AddForce(Vector3.up * jumpSpeed);
+            if (Input.GetButton("Jump"))
+            {
+                playerRB.AddForce(Vector3.up * jumpSpeed);
+            }
         }
     }
 }
