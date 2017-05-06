@@ -10,7 +10,8 @@ public class PlayerMovement : MonoBehaviour {
     // Movement control
     private float movementSpeed = 10.0f;
     private float jumpSpeed = 300.0f;
-    private float jumpHeight = 1.0f;
+    private float sphereCastDist = 0.7f;
+    private float spherecastSize = 0.4f;
 
     // Player look
     public float mouseSensitivity = 100.0f;
@@ -82,8 +83,8 @@ public class PlayerMovement : MonoBehaviour {
 
     void PlayerJump()
     {
-        Debug.DrawRay(transform.position, Vector3.down * jumpHeight, Color.red);
-        if (Physics.Raycast(transform.position, Vector3.down, jumpHeight))
+        Ray groundRay = new Ray(transform.position, Vector3.down);
+        if (Physics.SphereCast(groundRay, spherecastSize, sphereCastDist))
         {
             if (Input.GetButton("Jump"))
             {
