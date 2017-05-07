@@ -66,7 +66,6 @@ public class Mummy : MonoBehaviour {
 				audios [1].Play ();
 			}
 			audios [1].Stop ();
-			Debug.Log ("Playing step");
 			if (!audios [3].isPlaying) {
 				audios [3].pitch = Random.Range (-1.5f, -.5f);
 				audios [3].Play ();
@@ -105,7 +104,6 @@ public class Mummy : MonoBehaviour {
 	public void attack() {
 		stopSound ();
 		animStartTime = Time.time;
-		Debug.Log ("Seeting attack");
 		anim.SetTrigger ("Atack");
 		audios [2].pitch = Random.Range (-2.9f, -2f);
 		audios [2].Play ();
