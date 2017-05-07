@@ -13,11 +13,10 @@ public class PlayerMovement : MonoBehaviour {
 	private float jumpSpeed = 100.0f;
 	private float sphereCastDist = 0.7f;
 	private float spherecastSize = 0.4f;
-	private bool isGrounded = false;
 
 	// Movement feel
 	private Vector3 movement;
-	private float bobStrength = 0.2f;
+    private float bobStrength = 0.2f;
 	private int bobSpeed = 10;
 	float startPositionY;
 	private GameObject camPivot;
@@ -81,11 +80,6 @@ public class PlayerMovement : MonoBehaviour {
 		PlayerJump(collision);
 	}
 
-	void OnCollisionExit()
-	{
-		isGrounded = false;
-	}
-
 	void PlayerMove()
 	{
 		float forwardMovement = Input.GetAxis("Vertical");
@@ -129,14 +123,13 @@ public class PlayerMovement : MonoBehaviour {
 			{
 				playerRB.AddForce(Vector3.up * jumpSpeed);
 			}
-			isGrounded = true;
 		}
 	}
 
 	void PlayerBob()
 	{
 		Ray groundRay = new Ray(transform.position, Vector3.down);
-		if (isGrounded && Physics.SphereCast(groundRay, spherecastSize, sphereCastDist) && movement.magnitude >= 5.0f)
+		if (Physics.SphereCast(groundRay, spherecastSize, sphereCastDist) && movement.magnitude >= 5.0f)
 		{
 			startPositionY = camPivot.transform.position.y;
 			movementTime += Time.deltaTime;
