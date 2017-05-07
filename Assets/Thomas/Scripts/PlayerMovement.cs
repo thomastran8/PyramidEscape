@@ -35,6 +35,9 @@ public class PlayerMovement : MonoBehaviour {
     private float initialCamHeight;         // Reset the cam height
     private float initialCamPivotHeight;   // Reset the cam pivot height
     private CapsuleCollider playerCapsule;  // Change the collider height
+    private float initialMovementSpeed;
+    private float crouchSpeed = 0.5f;
+    private float crawlSpeed = 0.2f;
     public bool isCrouched = false;
     public bool isCrawl = false;
 
@@ -54,6 +57,7 @@ public class PlayerMovement : MonoBehaviour {
         initialColliderHeight = playerCapsule.height;
         initialCamHeight = playerCam.transform.localPosition.y;
         initialCamPivotHeight = camPivot.transform.localPosition.y;
+        initialMovementSpeed = movementSpeed;
     }
 
     // Update is called once per frame
@@ -147,6 +151,7 @@ public class PlayerMovement : MonoBehaviour {
             playerCam.transform.localPosition = new Vector3(0.0f, initialCamHeight * crouchHeight, 0.0f);
             camPivot.transform.localPosition = new Vector3(0.0f, initialCamPivotHeight * crouchHeight, 0.0f);
             isCrouched = true;
+            movementSpeed = initialMovementSpeed * crouchSpeed;
         }
         // Crawl
         else if (Input.GetButtonDown("Crouch") && isCrouched && !isCrawl)
@@ -156,6 +161,7 @@ public class PlayerMovement : MonoBehaviour {
             camPivot.transform.localPosition = new Vector3(0.0f, initialCamPivotHeight * crawlHeight, 0.0f);
             isCrouched = false;
             isCrawl = true;
+            movementSpeed = initialMovementSpeed * crawlSpeed;
         }
         // Stand
         else if (Input.GetButtonDown("Crouch") && !isCrouched && isCrawl)
@@ -164,6 +170,7 @@ public class PlayerMovement : MonoBehaviour {
             playerCam.transform.localPosition = new Vector3(0.0f, initialCamHeight, 0.0f);
             camPivot.transform.localPosition = new Vector3(0.0f, initialCamPivotHeight, 0.0f);
             isCrawl = false;
+            movementSpeed = initialMovementSpeed;
         }
     }
 }
