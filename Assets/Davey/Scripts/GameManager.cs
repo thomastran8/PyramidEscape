@@ -13,8 +13,7 @@ public class GameManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		Debug.Log (Input.GetKey (KeyCode.Escape));
-		if (Input.GetKeyDown(KeyCode.P)) {
+		if (Input.GetKeyDown(KeyCode.Escape)) {
 			if (isPaused) {
 				unpause ();
 			} 
