@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		isPaused = false;
+        unpause();
 	}
 	
 	// Update is called once per frame

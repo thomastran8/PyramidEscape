@@ -55,14 +55,31 @@ public class Weapon_Mummy : Mummy {
             threatenTime = Time.time;
             anim.ResetTrigger("Run");
             anim.SetTrigger("Threaten");
+            anim.SetTrigger("Idle");
             StartCoroutine(threaten());
             isPlayerFound = false;
             return;
         }//Must first enter threaten
         isPlayerFound = false;
-        if (threatenTime + 2f > Time.time)
-          anim.SetTrigger("Idle");
-        
+        if (threatenTime + 3f > Time.time) {
+
+            if (isGuarding && (transform.position - originalPosition).magnitude > 5) {
+                returnToPost();
+            }
+            else {
+                Debug.Log("Made it");
+                anim.ResetTrigger("Run");
+                anim.SetTrigger("Threaten");
+                anim.SetTrigger("Idle");
+            }
+        }
+    }
+
+    override protected void returnToPost() {
+        Debug.Log("Returning");
+    
+        MoveToPosition(originalPosition - transform.position, false);
+
     }
 
     IEnumerator threaten() {

@@ -4,15 +4,13 @@ using System.Collections;
 public class Mummy : MonoBehaviour {
 	protected GameObject player;
 	public int damage = 1;
-	public float detectionRange = 10f;
-	public float attackRange = 1f;
-	public float attackTimeStart = .2f;
+	public float detectionRange = 10f; //When enemy begins to chase
+	public float attackRange = 1f; //When enemy begins attack animation
+	public float attackTimeStart = .2f; //Time between enemy animation and damage proc
 	public float attackTimeEnd = .5f;
-
     public bool hasAttacked = false;
-	protected Animator anim;
-	protected Rigidbody rb;
-	public float speed = 2f;
+    protected Vector3 originalPosition;
+	public float speed = 3f; //Movement speed
 
 	public float growlsChance = .5f;
 	public float growlsTimerMax = 10f;
@@ -21,9 +19,12 @@ public class Mummy : MonoBehaviour {
 	protected bool isPlayerFound = false;
     public float footstepTime = .5f;
     protected bool walking;
+    public bool isGuarding;
 	protected AudioSource[] audios;
+    protected Animator anim;
+    protected Rigidbody rb;
 
-	private void Awake ()
+    private void Awake ()
 	{
         
         audios = GetComponents<AudioSource> ();
@@ -32,6 +33,7 @@ public class Mummy : MonoBehaviour {
 	}
 
 	void Start() {
+        originalPosition = transform.position;
         stopWalking();
         player = GameManager.player;
 		anim.updateMode = AnimatorUpdateMode.AnimatePhysics;
@@ -45,9 +47,8 @@ public class Mummy : MonoBehaviour {
                 if (dist.magnitude < attackRange && !hasAttacked) {
                     GameManager.player.SendMessage("applyDamage", damage);
                     hasAttacked = true;
-                }
-            }
-
+                }//Apply weaponless damage
+            } 
             return true;
         }//Do not move if attacking
         return false;
@@ -56,16 +57,15 @@ public class Mummy : MonoBehaviour {
 	void FixedUpdate() {
 		if (!GameManager.player.GetComponent<PlayerMovement> ().alive) {
             stopWalking();
-            anim.SetTrigger("Threaten");
-            anim.SetTrigger ("Idle");
+            lostPlayer();
 			return;
-		}
+		}//If player is dead, stop
 
 
 		Vector3 dist = player.transform.position - this.transform.position;
         if (attack(dist)) {
             return;
-        }
+        }//If waiting for attack to end, dont move
 
 
 		hasAttacked = false;
@@ -73,7 +73,7 @@ public class Mummy : MonoBehaviour {
 			startAttack ();
 		}
 		else if (dist.magnitude < detectionRange) {
-			MoveToPlayer (dist);
+			MoveToPosition (dist, true);
 		}//in detection range but needs to move closer to attack
 		else {
             lostPlayer();
@@ -83,32 +83,54 @@ public class Mummy : MonoBehaviour {
    virtual protected void lostPlayer() {
         stopWalking();
         isPlayerFound = false;
-        anim.SetTrigger("Idle");
+       
+        if (isGuarding) {
+            returnToPost();
+        }
+        else {
+            anim.SetTrigger("Idle");
+        }
+    }//If enemey lost sight of play
+
+    virtual protected void returnToPost() {
+        Debug.Log("Returning");
+        if ((transform.position - originalPosition).magnitude > 5) {
+
+
+            MoveToPosition(originalPosition - transform.position, false);
+        }
+        else {
+            anim.SetTrigger("Idle");
+        }
+
     }
 
-
-	public void MoveToPlayer(Vector3 dist) {
-        if (!isPlayerFound) {
+	public void MoveToPosition(Vector3 dist, bool found) {
+        if (!isPlayerFound && found) {
             isPlayerFound = true;
             audios[1].pitch = Random.Range(0f, 1f);
             audios[1].Play();
-        }
+        }//Play surprise noise
         if (!walking) {
-           
             startWalking();
+        }//Begin walking animation
+        if (found) {
+            transform.LookAt(player.transform);
         }
-        transform.LookAt (player.transform);
+        else {
+            transform.LookAt(dist);
+        }
 		Vector3 oldRot = transform.rotation.eulerAngles; 
 		transform.rotation = Quaternion.Euler(0, oldRot.y, 0); 
 		rb.velocity = new Vector3(dist.normalized.x,rb.velocity.y,dist.normalized.z) * speed;
 		anim.SetTrigger ("Run");
-	}
+	}//Changs animation and begins moving towards position
 
 	public void stopSound() {
 		foreach(AudioSource sound in audios) {
 			sound.Stop ();
 		}
-	}
+	}//Stops all sounds
 
     void startWalking() {
         if (walking == false) { 
@@ -117,7 +139,6 @@ public class Mummy : MonoBehaviour {
             StartCoroutine("footsteps");
             walking = true;
         }
-        
     }
 
     public void stopWalking() {
@@ -139,7 +160,6 @@ public class Mummy : MonoBehaviour {
 		anim.SetTrigger ("Atack");
 		audios [2].pitch = Random.Range (0f, 1f);
 		audios [2].Play ();
-
 	}
 
 	public void Death() {
