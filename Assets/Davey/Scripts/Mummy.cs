@@ -30,6 +30,11 @@ public class Mummy : MonoBehaviour {
 	}
 
 	void FixedUpdate() {
+		if (!GameManager.player.GetComponent<PlayerMovement> ().alive) {
+			anim.SetTrigger ("Idle");
+			return;
+		}
+
 		Vector3 dist = player.transform.position - this.transform.position;
 		if (anim.GetCurrentAnimatorStateInfo(0).IsName("Atack_Weaponless")) {
 			if (anim.GetCurrentAnimatorStateInfo(0).length >= attackTime) {
@@ -41,25 +46,30 @@ public class Mummy : MonoBehaviour {
 			return;
 		}//Do not move if attacking
 
-
 		hasAttacked = false;
 		if (dist.magnitude < attackRange) {
-			anim.SetTrigger ("Atack");
-			rb.velocity = Vector3.zero;
+			attack ();
 		}
+
 		else if (dist.magnitude < detectionRange) {
-			Debug.Log (Vector3.Angle (transform.position.normalized, player.transform.position.normalized));
-
-			transform.LookAt (player.transform);
-			Vector3 oldRot = transform.rotation.eulerAngles; 
-			transform.rotation = Quaternion.Euler(0, oldRot.y, 0); 
-			rb.velocity = new Vector3(dist.normalized.x,0,dist.normalized.z) * speed;
-			anim.SetTrigger ("Run");
+			MoveToPlayer (dist);
 		}//in detection range but needs to move closer to attack
-
 		else {
 			anim.SetTrigger ("Idle");
 		}//Too far so stay idle
+	}
+
+	public void MoveToPlayer(Vector3 dist) {
+		transform.LookAt (player.transform);
+		Vector3 oldRot = transform.rotation.eulerAngles; 
+		transform.rotation = Quaternion.Euler(0, oldRot.y, 0); 
+		rb.velocity = new Vector3(dist.normalized.x,0,dist.normalized.z) * speed;
+		anim.SetTrigger ("Run");
+	}
+
+	public void attack() {
+		anim.SetTrigger ("Atack");
+		rb.velocity = Vector3.zero;
 	}
 
 	public void Death() {

@@ -39,7 +39,7 @@ public class PlayerHealth : MonoBehaviour {
 		UpdateUI ();
 		if (hp <= 0) {
 			Debug.Log ("YOU ARE DEAD");
-			this.gameObject.SetActive (false);
+			this.gameObject.GetComponent<PlayerMovement> ().alive = false;
 			return true;
 		}
 		return false;

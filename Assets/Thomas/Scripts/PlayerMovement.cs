@@ -6,7 +6,7 @@ public class PlayerMovement : MonoBehaviour {
 	// Components
 	private Rigidbody playerRB;
 	private Camera playerCam;
-
+	public bool alive = true;
 	// Movement control
 	private float movementSpeed = 400.0f;
 	private float jumpSpeed = 100.0f;
@@ -48,6 +48,10 @@ public class PlayerMovement : MonoBehaviour {
 
 	void FixedUpdate()
 	{
+		if (!alive) {
+			return;
+		}
+
 		PlayerMove();
 		PlayerLook();
 		PlayerBob();
