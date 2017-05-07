@@ -29,8 +29,6 @@ public class Mummy : MonoBehaviour {
 
 	}
 
-
-
 	void FixedUpdate() {
 		Vector3 dist = player.transform.position - this.transform.position;
 		if (anim.GetCurrentAnimatorStateInfo(0).IsName("Atack_Weaponless")) {
