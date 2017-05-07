@@ -2,27 +2,26 @@
 using System.Collections;
 
 public class Mummy : MonoBehaviour {
-	private GameObject player;
+	protected GameObject player;
 	public int damage = 1;
 	public float detectionRange = 10f;
 	public float attackRange = 1f;
 	public float attackTimeStart = .2f;
 	public float attackTimeEnd = .5f;
 
-	private bool hasAttacked = false;
+    public bool hasAttacked = false;
 	protected Animator anim;
 	protected Rigidbody rb;
 	public float speed = 2f;
 
 	public float growlsChance = .5f;
-	private float growlsCheckTimer = 10f;
 	public float growlsTimerMax = 10f;
-	private float animStartTime = 0;
+	protected float animStartTime = 0;
 
-	private bool isPlayerFound = false;
+	protected bool isPlayerFound = false;
     public float footstepTime = .5f;
-    private bool walking;
-	private AudioSource[] audios;
+    protected bool walking;
+	protected AudioSource[] audios;
 
 	private void Awake ()
 	{
@@ -39,29 +38,39 @@ public class Mummy : MonoBehaviour {
 
 	}
 
+    virtual public bool attack(Vector3 dist) {
+        if (anim.GetCurrentAnimatorStateInfo(0).IsName("Atack_Weaponless") || anim.GetBool("Atack")) {
+            stopWalking();
+            if (Time.time >= animStartTime + attackTimeStart && Time.time < animStartTime + attackTimeEnd) {
+                if (dist.magnitude < attackRange && !hasAttacked) {
+                    GameManager.player.SendMessage("applyDamage", damage);
+                    hasAttacked = true;
+                }
+            }
+
+            return true;
+        }//Do not move if attacking
+        return false;
+    }
+
 	void FixedUpdate() {
 		if (!GameManager.player.GetComponent<PlayerMovement> ().alive) {
             stopWalking();
-			anim.SetTrigger ("Idle");
+            anim.SetTrigger("Threaten");
+            anim.SetTrigger ("Idle");
 			return;
 		}
 
-		Vector3 dist = player.transform.position - this.transform.position;
-		if (anim.GetCurrentAnimatorStateInfo(0).IsName("Atack_Weaponless") || anim.GetBool("Atack")) {
-            stopWalking();
-			if (Time.time >= animStartTime + attackTimeStart && Time.time < animStartTime + attackTimeEnd) {
-				if (dist.magnitude < attackRange && !hasAttacked) {
-					GameManager.player.SendMessage ("applyDamage", damage);
-					hasAttacked = true;
-				}
-			}
 
-			return;
-		}//Do not move if attacking
+		Vector3 dist = player.transform.position - this.transform.position;
+        if (attack(dist)) {
+            return;
+        }
+
 
 		hasAttacked = false;
 		if (dist.magnitude < attackRange) {
-			attack ();
+			startAttack ();
 		}
 		else if (dist.magnitude < detectionRange) {
 			MoveToPlayer (dist);
@@ -71,7 +80,7 @@ public class Mummy : MonoBehaviour {
 		}//Too far so stay idle
 	}
 
-   void lostPlayer() {
+   virtual protected void lostPlayer() {
         stopWalking();
         isPlayerFound = false;
         anim.SetTrigger("Idle");
@@ -102,36 +111,35 @@ public class Mummy : MonoBehaviour {
 	}
 
     void startWalking() {
-        if (walking == false) {
-            Debug.Log("Starting walk");
+        if (walking == false) { 
             stopWalking();
             walking = true;
-
             StartCoroutine("footsteps");
             walking = true;
+        }
+        
+    }
+
+    public void stopWalking() {
+        audios[3].Stop();
+        audios[4].Stop();
+        walking = false;
+
+        for (int i = 0; i < 5; i++) {
+            StopCoroutine("footsteps");
         }
 
     }
 
-    void stopWalking() {
-        Debug.Log("Stopping walk");
-        audios[3].Stop();
-        audios[4].Stop();
-        walking = false;
-        //StopAllCoroutines();
-        for (int i = 0; i < 5; i++) 
-        StopCoroutine("footsteps");
-        //StopAllCoroutines();
-    }
-
-	public void attack() {
+	public virtual void startAttack() {
         stopWalking();
         stopSound ();
-		animStartTime = Time.time;
+        rb.velocity = Vector3.zero;
+        animStartTime = Time.time;
 		anim.SetTrigger ("Atack");
 		audios [2].pitch = Random.Range (0f, 1f);
 		audios [2].Play ();
-		rb.velocity = Vector3.zero;
+
 	}
 
 	public void Death() {
