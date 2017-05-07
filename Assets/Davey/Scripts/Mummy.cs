@@ -12,6 +12,7 @@ public class Mummy : MonoBehaviour {
 	protected Animator anim;
 	protected Rigidbody rb;
 	public float speed = 2f;
+
 	private void Awake ()
 	{
 		
@@ -21,22 +22,31 @@ public class Mummy : MonoBehaviour {
 
 	void Start() {
 		player = GameManager.player;
-		anim.animatePhysics = false;
+		anim.updateMode = AnimatorUpdateMode.AnimatePhysics;
+
 	}
 
 
 
 	void FixedUpdate() {
-		Vector3 oldRot = transform.rotation.eulerAngles; 
-		transform.rotation= Quaternion.Euler(0, oldRot.y, 0); 
+		if (anim.GetCurrentAnimatorStateInfo(0).IsName("Atack_Weaponless")) {
+			return;
+
+		}//Do not move if attacking
+
+
 		Vector3 dist = player.transform.position - this.transform.position;
 		if (dist.magnitude < attackRange) {
 			anim.SetTrigger ("Atack");
+			rb.velocity = Vector3.zero;
 		}
 		else if (dist.magnitude < detectionRange) {
 			Debug.Log (Vector3.Angle (transform.position.normalized, player.transform.position.normalized));
+
 			transform.LookAt (player.transform);
-			rb.velocity = dist.normalized * speed;
+			Vector3 oldRot = transform.rotation.eulerAngles; 
+			transform.rotation = Quaternion.Euler(0, oldRot.y, 0); 
+			rb.velocity = new Vector3(dist.normalized.x,0,dist.normalized.z) * speed;
 			anim.SetTrigger ("Run");
 		}//in detection range but needs to move closer to attack
 
