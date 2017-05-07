@@ -3,12 +3,15 @@ using System.Collections;
 
 public class Mummy : MonoBehaviour {
 	private GameObject player;
+	public int damage = 1;
 	public float detectionRange = 10f;
 	public float attackRange = 1f;
+	public float attackTime = .5f;
 	[SerializeField]
 	protected string
 	_runTr, _atack_0_Tr, _dieTr, _gd_Tr;
 
+	private bool hasAttacked = false;
 	protected Animator anim;
 	protected Rigidbody rb;
 	public float speed = 2f;
@@ -29,13 +32,19 @@ public class Mummy : MonoBehaviour {
 
 
 	void FixedUpdate() {
+		Vector3 dist = player.transform.position - this.transform.position;
 		if (anim.GetCurrentAnimatorStateInfo(0).IsName("Atack_Weaponless")) {
+			if (anim.GetCurrentAnimatorStateInfo(0).length >= attackTime) {
+				if (dist.magnitude < attackRange && !hasAttacked) {
+					GameManager.player.SendMessage ("applyDamage", damage);
+					hasAttacked = true;
+				}
+			}
 			return;
-
 		}//Do not move if attacking
 
 
-		Vector3 dist = player.transform.position - this.transform.position;
+		hasAttacked = false;
 		if (dist.magnitude < attackRange) {
 			anim.SetTrigger ("Atack");
 			rb.velocity = Vector3.zero;
