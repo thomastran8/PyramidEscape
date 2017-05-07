@@ -14,6 +14,14 @@ public class Weapon_Mummy : Mummy {
         anim.SetTrigger("Atack_" + attackNum.ToString());
         audios[2].pitch = Random.Range(0f, 1f);
         audios[2].Play();
+
+        if (Random.Range(0f, 2f) > 1) {
+            audios[6].Play();
+        }
+        else {
+            audios[5].Play();
+
+        }
     }
 
     override public bool attack(Vector3 dist) {
@@ -47,6 +55,7 @@ public class Weapon_Mummy : Mummy {
             threatenTime = Time.time;
             anim.ResetTrigger("Run");
             anim.SetTrigger("Threaten");
+            StartCoroutine(threaten());
             isPlayerFound = false;
             return;
         }//Must first enter threaten
@@ -54,6 +63,17 @@ public class Weapon_Mummy : Mummy {
         if (threatenTime + 2f > Time.time)
           anim.SetTrigger("Idle");
         
+    }
+
+    IEnumerator threaten() {
+        for (int i = 0; i < 3; i++ ) {
+            //audios[7].pitch = Random.Range(-.5f, -.25f);
+            audios[7].Play();
+            yield return new WaitForSeconds(.5f);
+        }
+
+        yield break;
+
     }
 
 }
