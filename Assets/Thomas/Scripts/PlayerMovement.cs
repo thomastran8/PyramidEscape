@@ -143,7 +143,6 @@ public class PlayerMovement : MonoBehaviour {
 
     void PlayerCrouchCrawl()
     {
-        Debug.Log(initialCamPivotHeight * crouchHeight);
         // Crouch
         if ((Input.GetButtonDown("Crouch") && !isCrouched && !isCrawl))
         {

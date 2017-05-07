@@ -1,0 +1,244 @@
+fileFormatVersion: 2
+guid: 4643aa404e7c82d4a98a8037245e0b05
+timeCreated: 1494194782
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: potion_cork
+    100002: //RootNode
+    100004: potion_fire_liquid
+    100006: Potion_glass
+    100008: potion_metal_label001
+    100010: Torus008
+    100012: Torus009
+    100014: Torus010
+    100016: Torus011
+    100018: Torus012
+    100020: Torus013
+    100022: Torus014
+    100024: Torus015
+    100026: Torus016
+    100028: Torus017
+    100030: Torus018
+    100032: Torus019
+    100034: Torus020
+    100036: Torus021
+    100038: Torus022
+    100040: Torus023
+    100042: Torus024
+    100044: Torus025
+    100046: Torus026
+    100048: Torus027
+    100050: Torus028
+    100052: Torus029
+    100054: Torus030
+    100056: Torus031
+    100058: Torus032
+    100060: Torus033
+    100062: Torus034
+    100064: Torus035
+    100066: Torus036
+    400000: potion_cork
+    400002: //RootNode
+    400004: potion_fire_liquid
+    400006: Potion_glass
+    400008: potion_metal_label001
+    400010: Torus008
+    400012: Torus009
+    400014: Torus010
+    400016: Torus011
+    400018: Torus012
+    400020: Torus013
+    400022: Torus014
+    400024: Torus015
+    400026: Torus016
+    400028: Torus017
+    400030: Torus018
+    400032: Torus019
+    400034: Torus020
+    400036: Torus021
+    400038: Torus022
+    400040: Torus023
+    400042: Torus024
+    400044: Torus025
+    400046: Torus026
+    400048: Torus027
+    400050: Torus028
+    400052: Torus029
+    400054: Torus030
+    400056: Torus031
+    400058: Torus032
+    400060: Torus033
+    400062: Torus034
+    400064: Torus035
+    400066: Torus036
+    2300000: potion_cork
+    2300002: potion_fire_liquid
+    2300004: Potion_glass
+    2300006: potion_metal_label001
+    2300008: Torus008
+    2300010: Torus009
+    2300012: Torus010
+    2300014: Torus011
+    2300016: Torus012
+    2300018: Torus013
+    2300020: Torus014
+    2300022: Torus015
+    2300024: Torus016
+    2300026: Torus017
+    2300028: Torus018
+    2300030: Torus019
+    2300032: Torus020
+    2300034: Torus021
+    2300036: Torus022
+    2300038: Torus023
+    2300040: Torus024
+    2300042: Torus025
+    2300044: Torus026
+    2300046: Torus027
+    2300048: Torus028
+    2300050: Torus029
+    2300052: Torus030
+    2300054: Torus031
+    2300056: Torus032
+    2300058: Torus033
+    2300060: Torus034
+    2300062: Torus035
+    2300064: Torus036
+    3300000: potion_cork
+    3300002: potion_fire_liquid
+    3300004: Potion_glass
+    3300006: potion_metal_label001
+    3300008: Torus008
+    3300010: Torus009
+    3300012: Torus010
+    3300014: Torus011
+    3300016: Torus012
+    3300018: Torus013
+    3300020: Torus014
+    3300022: Torus015
+    3300024: Torus016
+    3300026: Torus017
+    3300028: Torus018
+    3300030: Torus019
+    3300032: Torus020
+    3300034: Torus021
+    3300036: Torus022
+    3300038: Torus023
+    3300040: Torus024
+    3300042: Torus025
+    3300044: Torus026
+    3300046: Torus027
+    3300048: Torus028
+    3300050: Torus029
+    3300052: Torus030
+    3300054: Torus031
+    3300056: Torus032
+    3300058: Torus033
+    3300060: Torus034
+    3300062: Torus035
+    3300064: Torus036
+    4300000: Potion_glass
+    4300002: potion_cork
+    4300004: potion_metal_label001
+    4300006: Torus008
+    4300008: Torus009
+    4300010: Torus010
+    4300012: Torus011
+    4300014: Torus012
+    4300016: Torus013
+    4300018: Torus014
+    4300020: Torus015
+    4300022: Torus016
+    4300024: Torus017
+    4300026: Torus018
+    4300028: Torus019
+    4300030: Torus020
+    4300032: Torus021
+    4300034: Torus022
+    4300036: Torus023
+    4300038: Torus024
+    4300040: Torus025
+    4300042: Torus026
+    4300044: Torus027
+    4300046: Torus028
+    4300048: Torus029
+    4300050: Torus030
+    4300052: Torus031
+    4300054: Torus032
+    4300056: Torus033
+    4300058: Torus034
+    4300060: Torus035
+    4300062: Torus036
+    4300064: potion_fire_liquid
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
