@@ -7,6 +7,7 @@ public class PlayerMovement : MonoBehaviour {
 	private Rigidbody playerRB;
 	private Camera playerCam;
 	public bool alive = true;
+
 	// Movement control
 	private float movementSpeed = 400.0f;
 	private float jumpSpeed = 100.0f;
@@ -19,7 +20,7 @@ public class PlayerMovement : MonoBehaviour {
 	private float bobStrength = 0.2f;
 	private int bobSpeed = 10;
 	float startPositionY;
-	public Transform camPosition;
+	private GameObject camPivot;
 	private float movementTime;
 
 	// Player look
@@ -28,19 +29,36 @@ public class PlayerMovement : MonoBehaviour {
 	private float rotY = 0.0f;
 	private float rotX = 0.0f;
 
+    //Player CrouchCrawl
+    private float crouchHeight = 0.7f;
+    private float crawlHeight = 0.1f;
+    private float initialColliderHeight;    // Reset the collider height
+    private float initialCamHeight;         // Reset the cam height
+    private float initialCamPivotHeight;   // Reset the cam pivot height
+    private CapsuleCollider playerCapsule;  // Change the collider height
+    public bool isCrouched = false;
+    public bool isCrawl = false;
+
 	// Use this for initialization
 	void Start () {
 		playerRB = GetComponent<Rigidbody>();
 		playerCam = Camera.main;
+        camPivot = GameObject.Find("CamPivot");
 
 		// Get starting rotation
 		Vector3 rot = transform.localRotation.eulerAngles;
 		rotY = rot.y;
 		rotX = rot.x;
-	}
 
-	// Update is called once per frame
-	void Update ()
+        // Crouch and Crawl
+        playerCapsule = GetComponentInChildren<CapsuleCollider>();
+        initialColliderHeight = playerCapsule.height;
+        initialCamHeight = playerCam.transform.localPosition.y;
+        initialCamPivotHeight = camPivot.transform.localPosition.y;
+    }
+
+    // Update is called once per frame
+    void Update ()
 	{
 		Cursor.lockState = CursorLockMode.Confined;
 		Cursor.lockState = CursorLockMode.Locked;
@@ -55,6 +73,7 @@ public class PlayerMovement : MonoBehaviour {
 		PlayerMove();
 		PlayerLook();
 		PlayerBob();
+        PlayerCrouchCrawl();
 	}
 
 	void OnCollisionStay(Collision collision)
@@ -119,9 +138,39 @@ public class PlayerMovement : MonoBehaviour {
 		Ray groundRay = new Ray(transform.position, Vector3.down);
 		if (isGrounded && Physics.SphereCast(groundRay, spherecastSize, sphereCastDist) && movement.magnitude >= 5.0f)
 		{
-			startPositionY = camPosition.position.y;
+			startPositionY = camPivot.transform.position.y;
 			movementTime += Time.deltaTime;
 			playerCam.transform.position = new Vector3(transform.position.x, startPositionY + Mathf.Sin(movementTime * bobSpeed) * bobStrength, playerCam.transform.position.z);
 		}
 	}
+
+    void PlayerCrouchCrawl()
+    {
+        Debug.Log(initialCamPivotHeight * crouchHeight);
+        // Crouch
+        if ((Input.GetButtonDown("Crouch") && !isCrouched && !isCrawl))
+        {
+            playerCapsule.height = initialColliderHeight * crouchHeight;
+            playerCam.transform.localPosition = new Vector3(0.0f, initialCamHeight * crouchHeight, 0.0f);
+            camPivot.transform.localPosition = new Vector3(0.0f, initialCamPivotHeight * crouchHeight, 0.0f);
+            isCrouched = true;
+        }
+        // Crawl
+        else if (Input.GetButtonDown("Crouch") && isCrouched && !isCrawl)
+        {
+            playerCapsule.height = initialColliderHeight * crawlHeight;
+            playerCam.transform.localPosition = new Vector3(0.0f, initialCamHeight * crawlHeight, 0.0f);
+            camPivot.transform.localPosition = new Vector3(0.0f, initialCamPivotHeight * crawlHeight, 0.0f);
+            isCrouched = false;
+            isCrawl = true;
+        }
+        // Stand
+        else if (Input.GetButtonDown("Crouch") && !isCrouched && isCrawl)
+        {
+            playerCapsule.height = initialColliderHeight;
+            playerCam.transform.localPosition = new Vector3(0.0f, initialCamHeight, 0.0f);
+            camPivot.transform.localPosition = new Vector3(0.0f, initialCamPivotHeight, 0.0f);
+            isCrawl = false;
+        }
+    }
 }
