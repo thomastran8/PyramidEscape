@@ -5,32 +5,40 @@ using System.Collections;
 public class Mummy : MonoBehaviour {
     public enum movementTypes { patrol, none };
 
+    public int health = 1;
+    public movementTypes moveType;
+    public Transform[] posts; /* posts to patrol between */
 
-    protected GameObject player;
-	public int damage = 1;
+    public int damage = 1; //Damage done to player
 	public float detectionRange = 10f; //When enemy begins to chase
 	public float attackRange = 1f; //When enemy begins attack animation
 	public float attackTimeStart = .2f; //Time between enemy animation and damage proc
 	public float attackTimeEnd = .5f;
-    public bool hasAttacked = false;
-    protected Vector3 originalPosition;
+
+    [HideInInspector] // Hides var below
+    public  bool hasAttacked = false;
+
 	public float speed = 3f; //Movement speed
 
 	public float growlsChance = .5f;
 	public float growlsTimerMax = 10f;
 	protected float animStartTime = 0;
-    public Transform[] posts;
+
     protected bool isPlayerFound = false;
     public float footstepTime = .5f;
     protected bool walking;
-    public movementTypes moveType;
+
     protected int curPost = 0;
-    
+    protected float deathTime = 5f;
+
 	protected AudioSource[] audios;
     protected Animator anim;
     protected Rigidbody rb;
     protected int numPosts;
-
+    protected GameObject player;
+    protected bool isDead = false;
+    protected bool isDamaged = false;
+    public float damageTime = 1f;
     private void Awake ()
 	{
         audios = GetComponents<AudioSource> ();
@@ -61,6 +69,12 @@ public class Mummy : MonoBehaviour {
     }
 
 	void FixedUpdate() {
+        if (isDead || isDamaged) {
+            rb.velocity = Vector3.zero;
+            anim.ResetTrigger("Run");
+            stopWalking();
+            return;
+        }
 		if (!GameManager.player.GetComponent<PlayerMovement> ().alive) {
             stopWalking();
             lostPlayer();
@@ -179,9 +193,7 @@ public class Mummy : MonoBehaviour {
 		audios [2].Play ();
 	}
 
-	public void Death() {
-//		anim.SetTrigger (_dieTr);
-	}
+
 
 	protected virtual void BaseButtons ()
 	{
@@ -209,6 +221,35 @@ public class Mummy : MonoBehaviour {
                 foot = 0;
             }
             yield return new WaitForSeconds(footstepTime);
+        }
+    }
+    IEnumerator Death() {
+        isDead = true;
+        stopWalking();
+        rb.velocity = Vector3.zero;
+        anim.SetTrigger("Die");
+        yield return new WaitForSeconds(deathTime);
+        Destroy(this.gameObject);
+
+    }
+
+    IEnumerator Damaged() {
+        isDamaged = true;
+        stopWalking();
+        rb.velocity = Vector3.zero;
+        anim.SetTrigger("Gd");
+        yield return new WaitForSeconds(damageTime);
+        isDamaged = false;
+    }
+    void OnTriggerEnter(Collider other) {
+        if (other.gameObject.name.Contains("FirePotion")) {
+            health--;
+            if (health <= 0) {
+                StartCoroutine("Death");
+            }
+            else {
+                StartCoroutine("Damaged");
+            }
         }
     }
 }
