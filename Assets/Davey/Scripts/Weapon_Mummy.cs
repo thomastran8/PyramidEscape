@@ -48,6 +48,7 @@ public class Weapon_Mummy : Mummy {
         return false;
     }
 
+
     override protected void lostPlayer() {
         stopWalking();
         
@@ -61,28 +62,41 @@ public class Weapon_Mummy : Mummy {
             return;
         }//Must first enter threaten
         isPlayerFound = false;
-        if (threatenTime + 3f > Time.time) {
 
-            if (isGuarding && (transform.position - originalPosition).magnitude > 5) {
-                returnToPost();
-            }
-            else {
-                Debug.Log("Made it");
-                anim.ResetTrigger("Run");
-                anim.SetTrigger("Threaten");
-                anim.SetTrigger("Idle");
-            }
-        }
+        returnToPost();
     }
 
     override protected void returnToPost() {
-        Debug.Log("Returning");
-    
-        MoveToPosition(originalPosition - transform.position, false);
+        if (audios[7].isPlaying) {
+            return;
+        }
+        if ((transform.position - posts[curPost].transform.position).magnitude <= 5 && numPosts != 1) {
+            curPost = (curPost + 1) % numPosts;
+            anim.SetTrigger("Threaten");
+            StartCoroutine(threaten());
+            anim.SetTrigger("Idle");
+        }//If at post, go to next one
 
+        if ((transform.position - posts[curPost].transform.position).magnitude > 5) {
+            MoveToPosition(posts[curPost].transform.position - transform.position, false);
+        }
+
+        else {
+            AnimatorStateInfo info = anim.GetCurrentAnimatorStateInfo(0);
+            if (!(info.IsName("Idle_Sword_Shield")) && !(info.IsName("Treaten_Sword_Shield"))) {
+                StartCoroutine(threaten());
+                anim.SetTrigger("Threaten");
+                return;
+            }
+            anim.ResetTrigger("Threaten");
+            anim.SetTrigger("Idle");
+        }//Back at single
     }
 
     IEnumerator threaten() {
+        if (audios[7].isPlaying) {
+            yield break;
+        }
         for (int i = 0; i < 3; i++ ) {
             //audios[7].pitch = Random.Range(-.5f, -.25f);
             audios[7].Play();

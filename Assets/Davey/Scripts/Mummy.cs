@@ -1,8 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+
 public class Mummy : MonoBehaviour {
-	protected GameObject player;
+    public enum movementTypes { patrol, none };
+
+
+    protected GameObject player;
 	public int damage = 1;
 	public float detectionRange = 10f; //When enemy begins to chase
 	public float attackRange = 1f; //When enemy begins attack animation
@@ -15,25 +19,27 @@ public class Mummy : MonoBehaviour {
 	public float growlsChance = .5f;
 	public float growlsTimerMax = 10f;
 	protected float animStartTime = 0;
-
-	protected bool isPlayerFound = false;
+    public Transform[] posts;
+    protected bool isPlayerFound = false;
     public float footstepTime = .5f;
     protected bool walking;
-    public bool isGuarding;
+    public movementTypes moveType;
+    protected int curPost = 0;
+    
 	protected AudioSource[] audios;
     protected Animator anim;
     protected Rigidbody rb;
+    protected int numPosts;
 
     private void Awake ()
 	{
-        
         audios = GetComponents<AudioSource> ();
 		anim = GetComponent <Animator> ();
 		rb = GetComponent<Rigidbody> ();
 	}
 
 	void Start() {
-        originalPosition = transform.position;
+        numPosts = posts.Length;
         stopWalking();
         player = GameManager.player;
 		anim.updateMode = AnimatorUpdateMode.AnimatePhysics;
@@ -84,7 +90,7 @@ public class Mummy : MonoBehaviour {
         stopWalking();
         isPlayerFound = false;
        
-        if (isGuarding) {
+        if (moveType != movementTypes.none) {
             returnToPost();
         }
         else {
@@ -93,15 +99,26 @@ public class Mummy : MonoBehaviour {
     }//If enemey lost sight of play
 
     virtual protected void returnToPost() {
-        Debug.Log("Returning");
-        if ((transform.position - originalPosition).magnitude > 5) {
-
-
-            MoveToPosition(originalPosition - transform.position, false);
+        if (audios[0].isPlaying) {
+            anim.SetTrigger("Idle");
+            rb.velocity = Vector3.zero;
+            return;
+            
         }
+        if ((transform.position - posts[curPost].transform.position).magnitude <= 5 && numPosts != 1) {
+            curPost = (curPost + 1) % numPosts;
+            audios[0].Play();
+            anim.ResetTrigger("Run");
+            anim.SetTrigger("Idle");
+        }//If at post, go to next one
+
+        if ((transform.position - posts[curPost].transform.position).magnitude > 5) {
+            MoveToPosition(posts[curPost].transform.position - transform.position, false);
+        }
+
         else {
             anim.SetTrigger("Idle");
-        }
+        }//Back at single
 
     }
 
@@ -118,7 +135,7 @@ public class Mummy : MonoBehaviour {
             transform.LookAt(player.transform);
         }
         else {
-            transform.LookAt(dist);
+            transform.LookAt(posts[curPost]);
         }
 		Vector3 oldRot = transform.rotation.eulerAngles; 
 		transform.rotation = Quaternion.Euler(0, oldRot.y, 0); 
