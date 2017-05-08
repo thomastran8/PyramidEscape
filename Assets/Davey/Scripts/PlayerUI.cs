@@ -9,6 +9,7 @@ public class PlayerUI : MonoBehaviour {
 	public Image[] icons;
 	public Sprite[] heartTypes;
     public GameObject quad;
+    public Camera cam;
 	// Use this for initialization
 	void Start () {
 		hp = 3;
@@ -41,13 +42,18 @@ public class PlayerUI : MonoBehaviour {
 		}
         potionText.text = numPotions.ToString() + "x";
 
-	}
+    }
+
+    public void ShakeCamera(float intensity, float decreasefactor) {
+        cam.GetComponent<CameraShake>().StartShake(intensity, decreasefactor);
+    }
 
 	/*
 	 * Applies damage to player and changes GUI to reflect damage taken
 	 * Returns true if player is killed
 	 */
 	bool applyDamage(int damage) {
+       
 		Debug.Log ("Player recieved " + damage.ToString () + " damage");
 		hp -= damage;
         StartCoroutine("Hit");
