@@ -3,17 +3,41 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 public class PlayerUI : MonoBehaviour {
-	public int hp;
-    public Text potionText;
+	private int hp;
+    private Text potionText;
     public int numPotions;
-	public Image[] icons;
-	public Sprite[] heartTypes;
-    public GameObject quad;
-    public Camera cam;
-	// Use this for initialization
-	void Start () {
-		hp = 3;
+	private Image[] icons;
+	private Sprite[] heartTypes;
+    private GameObject quad;
+    private Camera cam;
+    // Use this for initialization
+    private void Awake() {
         GameManager.UI = this;
+    }
+    void Start () {
+        cam = GameObject.Find("Main Camera").GetComponent<Camera>();
+        quad = GameObject.FindGameObjectWithTag("Red Flash");
+        if (quad == null) {
+            Debug.Log("Could not find flash");
+        }
+        hp = 3;
+        icons = new Image[3];
+        heartTypes = new Sprite[2];
+      
+        for (int i = 0; i < 3; i++) {
+            icons[i] = GameObject.Find("Heart" + i.ToString()).GetComponent<Image>();
+        }
+
+        heartTypes[0] = icons[0].sprite; //First sprite is an empty heart
+        heartTypes[1] = icons[1].sprite; //Second is a full heart
+
+        GameObject potionCount = GameObject.FindGameObjectWithTag("Potion Count");
+        if (potionCount == null) {
+            Debug.Log("Error: Could not find potion count text");
+        }
+
+        potionText = potionCount.GetComponent<Text>();
+       
 		UpdateUI ();
     }
 	

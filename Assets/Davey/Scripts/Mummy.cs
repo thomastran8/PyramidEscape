@@ -10,20 +10,20 @@ public class Mummy : MonoBehaviour
     public movementTypes moveType;
     public Transform[] posts; /* posts to patrol between */
 
-    public int damage = 1; //Damage done to player
+    protected int damage = 1; //Damage done to player
     public float detectionRange = 10f; //When enemy begins to chase
-    public float attackRange = 1f; //When enemy begins attack animation
-    public float attackTimeStart = .2f; //Time between enemy animation and damage proc
-    public float attackTimeEnd = .5f;
+    protected float attackRange = 2f; //When enemy begins attack animation
+    protected float attackTimeStart = .2f; //Time between enemy animation and damage proc
+    protected float attackTimeEnd = .5f;
 
     public float speed = 3f; //Movement speed
 
-    public float growlsChance = .5f;
-    public float growlsTimerMax = 10f;
+    protected float growlsChance = .5f;
+    protected float growlsTimerMax = 10f;
     protected float animStartTime = 0;
 
     protected bool isPlayerFound = false; //If chasing player
-    public float footstepTime = .5f; //Time between footstep sound
+    protected float footstepTime = .5f; //Time between footstep sound
     protected bool walking; //if moving
 
     protected int curPost = 0; //Which post the enemy is currently moving towards
@@ -36,7 +36,7 @@ public class Mummy : MonoBehaviour
     protected bool isDead = false;
     protected bool isDamaged = false;
     protected float deathTime = 5f; // time between start of death animation and destroy
-    public float damageTime = 1f; //Time of damage animation to do nothing
+    protected float damageTime = 1f; //Time of damage animation to do nothing
 
 
     public float crouchMultiplier = 1.5f;

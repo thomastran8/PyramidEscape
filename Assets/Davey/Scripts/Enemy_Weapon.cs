@@ -13,11 +13,10 @@ public class Enemy_Weapon : MonoBehaviour {
 
 
     private void OnTriggerEnter(Collider other) {
-        Debug.Log("Hit");
         if (mummy.isAttacking()) {
 
             if (other.name == "PlayerBody" && !mummy.hasAttacked ) {
-                GameManager.player.SendMessage("applyDamage", mummy.damage);
+                GameManager.player.SendMessage("applyDamage", 1);
                 mummy.hasAttacked = true;
             }
         }

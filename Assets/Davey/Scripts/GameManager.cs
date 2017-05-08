@@ -6,9 +6,11 @@ public class GameManager : MonoBehaviour {
 	public static GameObject player;
     public static PlayerUI UI;
 	static public bool isPaused;
-	public GameObject pauseText;
+	private GameObject pauseText;
 	// Use this for initialization
 	void Start () {
+        pauseText = GameObject.Find("Pause text");
+        pauseText.SetActive(false);
 		isPaused = false;
         unpause();
 	}
