@@ -224,6 +224,8 @@ public class Mummy : MonoBehaviour {
         }
     }
     IEnumerator Death() {
+        GetComponent<BoxCollider>().enabled = false;
+        GetComponent<Rigidbody>().useGravity = false;
         isDead = true;
         stopWalking();
         rb.velocity = Vector3.zero;
@@ -242,13 +244,15 @@ public class Mummy : MonoBehaviour {
         isDamaged = false;
     }
     void OnTriggerEnter(Collider other) {
-        if (other.gameObject.name.Contains("FirePotion")) {
-            health--;
-            if (health <= 0) {
-                StartCoroutine("Death");
-            }
-            else {
-                StartCoroutine("Damaged");
+        if (health > 0) {
+            if (other.gameObject.name.Contains("FirePotion")) {
+                health--;
+                if (health <= 0) {
+                    StartCoroutine("Death");
+                }
+                else {
+                    StartCoroutine("Damaged");
+                }
             }
         }
     }
