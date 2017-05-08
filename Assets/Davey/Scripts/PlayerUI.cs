@@ -2,21 +2,32 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-public class PlayerHealth : MonoBehaviour {
-	private int hp;
-
+public class PlayerUI : MonoBehaviour {
+	public int hp;
+    public Text potionText;
+    public int numPotions;
 	public Image[] icons;
 	public Sprite[] heartTypes;
 	// Use this for initialization
 	void Start () {
 		hp = 3;
+        GameManager.UI = this;
 		UpdateUI ();
 	}
 	
-	/*
+    public void getPotion() {
+        numPotions++;
+        UpdateUI();
+    }
+
+    public void usePotion() {
+        numPotions--;
+        UpdateUI();
+    }
+    /*
 	 *  Update UI to reflect damage taken
 	 */
-	void UpdateUI () {
+    void UpdateUI () {
 		int temphp = hp;
 		for (int i = 0; i < icons.Length; i++) {
 			if (temphp > 0) {
@@ -27,6 +38,8 @@ public class PlayerHealth : MonoBehaviour {
 				icons [i].sprite = heartTypes [0];
 			}// no health, empty container
 		}
+        potionText.text = numPotions.ToString() + "x";
+
 	}
 
 	/*
