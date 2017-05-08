@@ -8,12 +8,13 @@ public class PlayerUI : MonoBehaviour {
     public int numPotions;
 	public Image[] icons;
 	public Sprite[] heartTypes;
+    public GameObject quad;
 	// Use this for initialization
 	void Start () {
 		hp = 3;
         GameManager.UI = this;
 		UpdateUI ();
-	}
+    }
 	
     public void getPotion() {
         numPotions++;
@@ -49,6 +50,7 @@ public class PlayerUI : MonoBehaviour {
 	bool applyDamage(int damage) {
 		Debug.Log ("Player recieved " + damage.ToString () + " damage");
 		hp -= damage;
+        StartCoroutine("Hit");
 		UpdateUI ();
 		if (hp <= 0) {
 			Debug.Log ("YOU ARE DEAD");
@@ -57,4 +59,19 @@ public class PlayerUI : MonoBehaviour {
 		}
 		return false;
 	}
+
+    IEnumerator Hit() {
+        Debug.Log("HIT");
+        Renderer rend = quad.GetComponent<Renderer>();
+        float curAlpha = .9f;
+        rend.material.color = new Color (rend.material.color.r, rend.material.color.g, rend.material.color.b, curAlpha);
+        while(rend.material.color.a >= 0) {
+            Debug.Log(curAlpha);
+            curAlpha -= .01f;
+            rend.material.color = new Color(rend.material.color.r, rend.material.color.g, rend.material.color.b, curAlpha);
+            yield return new WaitForSeconds(.01f);
+        }
+
+        yield break;
+    }
 }
