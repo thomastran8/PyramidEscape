@@ -10,8 +10,9 @@ public class Weapon_Mummy : Mummy {
         stopSound();
         rb.velocity = Vector3.zero;
         animStartTime = Time.time;
-        int attackNum = Random.Range(0, 3);
+        
         if (weaponType == "Sword") {
+            int attackNum = Random.Range(0, 3);
             anim.SetTrigger("Atack_" + attackNum.ToString());
             audios[2].pitch = Random.Range(0f, 1f);
             audios[2].Play();
@@ -27,6 +28,13 @@ public class Weapon_Mummy : Mummy {
 
         if (weaponType == "Spear") {
             anim.SetTrigger("Atack");
+            audios[2].pitch = Random.Range(0f, 1f);
+            audios[2].Play();
+        }
+
+        if (weaponType == "Axe") {
+            int attackNum = Random.Range(0, 2);
+            anim.SetTrigger("Atack_" + attackNum.ToString());
             audios[2].pitch = Random.Range(0f, 1f);
             audios[2].Play();
         }
@@ -64,6 +72,18 @@ public class Weapon_Mummy : Mummy {
             }
             return false;
         }
+
+        if (weaponType == "Axe") {
+            Debug.Log("HERE");
+            if (info.IsName("Atack_0_Axe") || info.IsName("Atack_1_Axe")) {
+                return true;
+            }
+
+            if (anim.GetBool("Atack_0") || anim.GetBool("Atack_1")) {
+                return true;
+            }
+            return false;
+        }
        
 
         return false;
@@ -76,9 +96,13 @@ public class Weapon_Mummy : Mummy {
         if (isPlayerFound) {
             threatenTime = Time.time;
             anim.ResetTrigger("Run");
-            anim.SetTrigger("Threaten");
+            if (weaponType != "Axe") {
+                anim.SetTrigger("Threaten");
+                StartCoroutine(threaten());
+            }
+          
             anim.SetTrigger("Idle");
-            StartCoroutine(threaten());
+         
             isPlayerFound = false;
             return;
         }//Must first enter threaten
@@ -97,8 +121,11 @@ public class Weapon_Mummy : Mummy {
         }
         if ((transform.position - posts[curPost].transform.position).magnitude <= 5 && numPosts != 1) {
             curPost = (curPost + 1) % numPosts;
-            anim.SetTrigger("Threaten");
-            StartCoroutine(threaten());
+            if (weaponType != "Axe") {
+                anim.SetTrigger("Threaten");
+                StartCoroutine(threaten());
+            }
+          
             anim.SetTrigger("Idle");
         }//If at post, go to next one
 
@@ -108,13 +135,27 @@ public class Weapon_Mummy : Mummy {
 
         else {
             AnimatorStateInfo info = anim.GetCurrentAnimatorStateInfo(0);
-            if (!(info.IsName("Idle_Sword_Shield")) && !(info.IsName("Treaten_Sword_Shield"))) {
-                StartCoroutine(threaten());
-                anim.SetTrigger("Threaten");
-                return;
+            if (weaponType == "Sword") {
+                if (!(info.IsName("Idle_Sword_Shield")) && !(info.IsName("Treaten_Sword_Shield"))) {
+                    StartCoroutine(threaten());
+                    anim.SetTrigger("Threaten");
+                    return;
+                }
+                anim.ResetTrigger("Threaten");
+                anim.SetTrigger("Idle");
             }
-            anim.ResetTrigger("Threaten");
-            anim.SetTrigger("Idle");
+            if (weaponType == "Spear") {
+                if (!(info.IsName("Idle_Spear")) && !(info.IsName("Treaten_Spear"))) {
+                    StartCoroutine(threaten());
+                    anim.SetTrigger("Threaten");
+                    return;
+                }
+                anim.ResetTrigger("Threaten");
+                anim.SetTrigger("Idle");
+            }
+            if (weaponType == "Axe") {
+                anim.SetTrigger("Idle");
+            }
         }//Back at single
     }
 
@@ -124,7 +165,9 @@ public class Weapon_Mummy : Mummy {
         }
         for (int i = 0; i < 3; i++ ) {
             //audios[7].pitch = Random.Range(-.5f, -.25f);
-            audios[7].Play();
+            if (weaponType == "Sword") {
+                audios[7].Play();
+            }
             yield return new WaitForSeconds(.5f);
         }
 
