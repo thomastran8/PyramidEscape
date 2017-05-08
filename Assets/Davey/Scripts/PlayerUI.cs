@@ -77,7 +77,7 @@ public class PlayerUI : MonoBehaviour {
 	 * Returns true if player is killed
 	 */
 	bool applyDamage(int damage) {
-       
+        
 		Debug.Log ("Player recieved " + damage.ToString () + " damage");
 		hp -= damage;
         StartCoroutine("Hit");
