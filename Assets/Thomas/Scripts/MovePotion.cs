@@ -7,6 +7,7 @@ public class MovePotion : MonoBehaviour {
     private Transform playerTr;
     private float throwForce = 1000.0f;
     private float deleteTimer = 10.0f;
+    public GameObject oilExplosion;
 
 	// Use this for initialization
 	void Start () {
@@ -24,6 +25,7 @@ public class MovePotion : MonoBehaviour {
 
     void OnTriggerEnter(Collider other)
     {
+        Instantiate(oilExplosion, transform.position, Quaternion.identity);
         Destroy(gameObject);
     }
 }
