@@ -74,7 +74,6 @@ public class Weapon_Mummy : Mummy {
         }
 
         if (weaponType == "Axe") {
-            Debug.Log("HERE");
             if (info.IsName("Atack_0_Axe") || info.IsName("Atack_1_Axe")) {
                 return true;
             }

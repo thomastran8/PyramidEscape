@@ -6,9 +6,10 @@ public class ThrowPotion : MonoBehaviour {
     private Animator playerAnimator;
     public GameObject potion;
     private GameObject rightHand;
-
+    private AudioSource[] sounds;
 	// Use this for initialization
 	void Start () {
+        sounds = GetComponents<AudioSource>();
         playerAnimator = GetComponent<Animator>();
         rightHand = GameObject.Find("PlayerRightHand");
 	}
@@ -17,6 +18,7 @@ public class ThrowPotion : MonoBehaviour {
 	void Update () {
 		if (Input.GetButtonDown("Fire1"))
         {
+            sounds[0].Play();
             playerAnimator.SetTrigger("ThrowPotion");
             StartCoroutine(WaitToThrow());
         }
