@@ -65,7 +65,8 @@ public class PlayerMovement : MonoBehaviour {
 	{
 		Cursor.lockState = CursorLockMode.Confined;
 		Cursor.lockState = CursorLockMode.Locked;
-	}
+        PlayerCrouchCrawl();
+    }
 
 	void FixedUpdate()
 	{
@@ -76,7 +77,6 @@ public class PlayerMovement : MonoBehaviour {
 		PlayerMove();
 		PlayerLook();
 		PlayerBob();
-        PlayerCrouchCrawl();
 	}
 
 	void OnCollisionStay(Collision collision)
