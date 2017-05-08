@@ -66,7 +66,6 @@ public class PlayerUI : MonoBehaviour {
         float curAlpha = .9f;
         rend.material.color = new Color (rend.material.color.r, rend.material.color.g, rend.material.color.b, curAlpha);
         while(rend.material.color.a >= 0) {
-            Debug.Log(curAlpha);
             curAlpha -= .01f;
             rend.material.color = new Color(rend.material.color.r, rend.material.color.g, rend.material.color.b, curAlpha);
             yield return new WaitForSeconds(.01f);

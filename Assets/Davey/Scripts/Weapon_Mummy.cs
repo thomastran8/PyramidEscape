@@ -11,17 +11,26 @@ public class Weapon_Mummy : Mummy {
         rb.velocity = Vector3.zero;
         animStartTime = Time.time;
         int attackNum = Random.Range(0, 3);
-        anim.SetTrigger("Atack_" + attackNum.ToString());
-        audios[2].pitch = Random.Range(0f, 1f);
-        audios[2].Play();
+        if (weaponType == "Sword") {
+            anim.SetTrigger("Atack_" + attackNum.ToString());
+            audios[2].pitch = Random.Range(0f, 1f);
+            audios[2].Play();
 
-        if (Random.Range(0f, 2f) > 1) {
-            audios[6].Play();
-        }
-        else {
-            audios[5].Play();
+            if (Random.Range(0f, 2f) > 1) {
+                audios[6].Play();
+            }
+            else {
+                audios[5].Play();
 
+            }
         }
+
+        if (weaponType == "Spear") {
+            anim.SetTrigger("Atack");
+            audios[2].pitch = Random.Range(0f, 1f);
+            audios[2].Play();
+        }
+
     }
 
     override public bool attack(Vector3 dist) {
@@ -42,6 +51,18 @@ public class Weapon_Mummy : Mummy {
             if (anim.GetBool("Atack_0") || anim.GetBool("Atack_1") || anim.GetBool("Atack_2")) {
                 return true;
             }
+            return false;
+        }
+
+        if (weaponType == "Spear") {
+            if (info.IsName("Atack_Spear")) {
+                return true;
+            }
+
+            if (anim.GetBool("Atack")) {
+                return true;
+            }
+            return false;
         }
        
 
@@ -67,6 +88,10 @@ public class Weapon_Mummy : Mummy {
     }
 
     override protected void returnToPost() {
+        if (moveType == movementTypes.none) {
+            return;
+        }//Do not return
+
         if (audios[7].isPlaying) {
             return;
         }

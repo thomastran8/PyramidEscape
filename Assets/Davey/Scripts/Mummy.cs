@@ -3,7 +3,7 @@ using System.Collections;
 
 
 public class Mummy : MonoBehaviour {
-    public enum movementTypes { patrol, none };
+    public enum movementTypes {none, patrol };
 
     public int health = 1;
     public movementTypes moveType;
