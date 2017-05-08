@@ -276,7 +276,17 @@ public class Mummy : MonoBehaviour
         anim.SetTrigger("Gd");
         yield return new WaitForSeconds(damageTime);
         isDamaged = false;
+        StartCoroutine("Chase");
     }
+
+    IEnumerator Chase() {
+        float oldRange = detectionRange;
+        detectionRange = detectionRange * 3;
+        yield return new WaitForSeconds(20f);
+        detectionRange = oldRange;
+        yield break;
+    }
+
     void OnTriggerEnter(Collider other) {
         if (health > 0) {
             if (other.gameObject.name.Contains("FirePotion")) {
@@ -288,6 +298,14 @@ public class Mummy : MonoBehaviour
                     StartCoroutine("Damaged");
                 }
             }
+           
+        }
+    }
+
+    private void OnCollisionEnter(Collision other) {
+        if (other.gameObject.tag == "Boulder") {
+            Debug.Log("Dying");
+            StartCoroutine("Death");
         }
     }
 }
