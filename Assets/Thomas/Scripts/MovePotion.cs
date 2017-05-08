@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MovePotion : MonoBehaviour {
     private Rigidbody potionRB;
-    private float throwForce = 1000.0f;
+    private float throwForce = 500.0f;
     private float deleteTimer = 10.0f;
     public GameObject oilExplosion;
 
