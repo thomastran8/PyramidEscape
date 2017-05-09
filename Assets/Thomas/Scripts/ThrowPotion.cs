@@ -8,11 +8,13 @@ public class ThrowPotion : MonoBehaviour {
     private GameObject rightHand;
     private AudioSource[] sounds;
     private PlayerUI pUI;
+    private GameObject PotionHold;
 	// Use this for initialization
 	void Start () {
         sounds = GetComponents<AudioSource>();
         playerAnimator = GetComponent<Animator>();
         rightHand = gameObject.transform.FindChild("PlayerBody").FindChild("Main Camera").FindChild("PlayerHands").FindChild("PlayerRightHand").gameObject;
+        PotionHold = rightHand.transform.FindChild("FirePotionHold").gameObject;
         pUI = GetComponent<PlayerUI>();
 	}
 	
@@ -25,11 +27,15 @@ public class ThrowPotion : MonoBehaviour {
             StartCoroutine(WaitToThrow());
             pUI.usePotion();
         }
-	}
+    }
 
     IEnumerator WaitToThrow()
     {
         yield return new WaitForSeconds(0.15f);
         Instantiate(potion, rightHand.transform.position, Quaternion.identity);
+        if (pUI.numPotions == 0)
+        {
+            PotionHold.SetActive(false);
+        }
     }
 }
