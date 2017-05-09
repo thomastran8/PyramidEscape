@@ -45,7 +45,7 @@ public class PlayerMovement : MonoBehaviour {
 	void Start () {
 		playerRB = GetComponent<Rigidbody>();
 		playerCam = Camera.main;
-        camPivot = GameObject.Find("CamPivot");
+        camPivot = gameObject.transform.Find("PlayerBody").FindChild("CamPivot").gameObject;
 
 		// Get starting rotation
 		Vector3 rot = transform.localRotation.eulerAngles;
