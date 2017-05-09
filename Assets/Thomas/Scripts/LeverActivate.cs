@@ -4,10 +4,14 @@ using UnityEngine;
 
 public class LeverActivate : MonoBehaviour {
     private Animator anim;
+    public bool useScreenShakeOnActivate = false;
+    public GameObject[] activatables;
+    private CameraEffects playerCamEffect;
 
 	// Use this for initialization
 	void Start () {
         anim = GetComponent<Animator>();
+        playerCamEffect = Camera.main.GetComponent<CameraEffects>();
 	}
 	
 	// Update is called once per frame
@@ -18,5 +22,25 @@ public class LeverActivate : MonoBehaviour {
     public void ActivateLever()
     {
         anim.SetBool("SwitchOn", true);
+
+        StartCoroutine(WaitToActivate());
+    }
+
+    IEnumerator WaitToActivate()
+    {
+        if (!useScreenShakeOnActivate)
+        {
+            yield return new WaitForSeconds(2.5f);
+        }
+        else
+        {
+            yield return new WaitForSeconds(2.0f);
+            playerCamEffect.StartShake(0.1f, 1.0f);
+            yield return new WaitForSeconds(8.0f);
+        }
+        for (int i = 0; i < activatables.Length; i++)
+        {
+            activatables[i].SetActive(true);
+        }
     }
 }
