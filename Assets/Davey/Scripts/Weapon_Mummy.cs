@@ -42,8 +42,13 @@ public class Weapon_Mummy : Mummy {
         if (weaponType == "Axe") {
             int attackNum = Random.Range(0, 2);
             anim.SetTrigger("Atack_" + attackNum.ToString());
-            audios[2].pitch = Random.Range(0f, 1f);
+            audios[2].pitch = Random.Range(.5f, 1f);
             audios[2].Play();
+			audios[6].Play();
+			Debug.Log (audios [5].name);
+			if (attackNum == 1) {
+				audios[6].Play();
+			}
         }
 
     }
