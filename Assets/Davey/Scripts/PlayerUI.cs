@@ -18,22 +18,12 @@ public class PlayerUI : MonoBehaviour {
     private void Awake() {
         GameManager.UI = this;
     }
-
-	public void respawn() {
-		hp = 3;
-		this.gameObject.GetComponent<PlayerMovement> ().alive = true;
-		curPotions = numPotions;
-//		UpdateUI();
-	}
-
+		
     void Start () {
-		GameObject.FindGameObjectWithTag("Canvas").GetComponent<Canvas>().worldCamera = GameObject.Find("Main Camera").GetComponent<Camera>();
-		curPotions = numPotions;
-        cam = GameObject.Find("Main Camera").GetComponent<Camera>();
+		cam = GameObject.Find("Main Camera").GetComponent<Camera>();
+		GameObject.FindGameObjectWithTag ("Canvas").GetComponent<Canvas> ().worldCamera = cam;
+		curPotions = numPotions; //Set current number of potions to number of potions for that level
         quad = GameObject.FindGameObjectWithTag("Red Flash");
-        if (quad == null) {
-            Debug.Log("Could not find flash");
-        }
         hp = 3;
         icons = new Image[3];
         heartTypes = new Sprite[2];
@@ -46,9 +36,6 @@ public class PlayerUI : MonoBehaviour {
         heartTypes[1] = icons[1].sprite; //Second is a full heart
 
         GameObject potionCount = GameObject.FindGameObjectWithTag("Potion Count");
-        if (potionCount == null) {
-            Debug.Log("Error: Could not find potion count text");
-        }
 
         potionText = potionCount.GetComponent<Text>();
        
@@ -95,13 +82,11 @@ public class PlayerUI : MonoBehaviour {
         Transform camera = cam.gameObject.transform;
 		while (camera.rotation.eulerAngles.x <= 70) {
             Vector3 oldRot = camera.rotation.eulerAngles;
-			Debug.Log (camera.rotation.eulerAngles.x);
             camera.rotation = Quaternion.Euler(oldRot.x + 1, oldRot.y, oldRot.z + Random.Range(0f,2f)) ;
             yield return new WaitForSeconds(.03f);
         }
 		camera = orig;
-		Debug.Log ("Done panning");
-		GameObject.FindGameObjectWithTag ("GameManager").GetComponent<GameManager> ().respawn ();
+		GameObject.FindGameObjectWithTag ("Game Manager").GetComponent<GameManager> ().respawn ();
         yield break;
     }
 
@@ -133,10 +118,9 @@ public class PlayerUI : MonoBehaviour {
         Renderer rend = quad.GetComponent<Renderer>();
 		Renderer orig = rend;
 		while (rend.material.color != new Color(0,0,0)) {
-            rend.material.color = Color.Lerp(rend.material.color, Color.black, .06f);
+            rend.material.color = Color.Lerp(rend.material.color, Color.black, .12f);
             yield return new WaitForSeconds(.01f);
         }
-		Debug.Log ("Done fading");
 		rend = orig;
         yield break;
     }

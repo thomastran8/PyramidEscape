@@ -304,7 +304,6 @@ public class Mummy : MonoBehaviour
 
     private void OnCollisionEnter(Collision other) {
         if (other.gameObject.tag == "Boulder") {
-            Debug.Log("Dying");
             StartCoroutine("Death");
         }
     }

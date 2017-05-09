@@ -4,13 +4,6 @@ using UnityEngine;
 
 public class Enemy_Weapon : MonoBehaviour {
     public Weapon_Mummy mummy;
-    
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-
 
     private void OnTriggerEnter(Collider other) {
         if (mummy.isAttacking()) {

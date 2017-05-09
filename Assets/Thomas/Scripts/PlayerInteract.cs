@@ -24,6 +24,11 @@ public class PlayerInteract : MonoBehaviour {
                 lever.ActivateLever();
                 playerAnim.SetTrigger("ActivateObject");
             }
+			CheckPoint cp = interactInfoRay.collider.GetComponent<CheckPoint>();
+			if (cp) {
+				cp.checkpoint ();
+				playerAnim.SetTrigger("ActivateObject");
+			}
         }
 	}
 }

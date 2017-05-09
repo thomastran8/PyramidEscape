@@ -9,9 +9,8 @@ public class GameManager : MonoBehaviour {
     public static PlayerUI UI;
 	static public bool isPaused;
 	private GameObject pauseText;
-	public Transform playerSpawn;
-	private Vector3 spawn;
-	private int spawnCount = 0;
+
+	static private Vector3 spawn; //Stores player spawn position on reload
 
     private static GameManager instance;
 
@@ -25,37 +24,27 @@ public class GameManager : MonoBehaviour {
         }
     }
 
-	public Vector3 getSpawn() {
-		return spawn;
+	static public void nextLevel() {
+		Debug.Log ("Moving to next level");
+		SceneManager.LoadScene((SceneManager.GetActiveScene().buildIndex + 1));
 	}
+		
 
 	void OnEnable() {
-		SceneManager.sceneLoaded += OnSceneLoaded;
+		SceneManager.sceneLoaded += OnSceneLoaded; // call this function when scene loads
 	}
 
 	private void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
-		setPause ();
-//		if (spawnCount != 0) {
-//			respawn ();
-//		}
-//		spawnCount++;
+		DynamicGI.UpdateEnvironment (); // Fix lighting
+		setPause (); // remove pause text
+		player.GetComponent<Transform>().position = spawn;
 	}
-
-    // Use this for initialization
-    void Start () {
-		spawn = playerSpawn.position;
-//		setPause ();
-	}
-
-	public void setSpawn(Transform newSpawn) {
-		playerSpawn = newSpawn;
-		spawn = playerSpawn.position;
+		
+	static public void setSpawn(Vector3 newSpawn) {
+		spawn = newSpawn;
 	}
 
 	public void respawn(){
-		Debug.Log ("Respawning");
-		UI.respawn ();
-		player.GetComponent<Transform>().position = playerSpawn.position;
 		SceneManager.LoadScene (SceneManager.GetActiveScene ().buildIndex);
 	}
 
