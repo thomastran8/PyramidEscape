@@ -11,8 +11,20 @@ public class AudioManager : MonoBehaviour {
 	private float growlsCheckTimer = 10f;
 	public float growlsTimerMax = 10f;
 	AudioSource[] audios;
-	// Use this for initialization
-	void Start () {
+
+    private static AudioManager instance;
+
+    private void Awake() {
+        if (instance != null && instance != this) {
+            Destroy(this.gameObject);
+        }
+        else {
+            instance = this;
+            DontDestroyOnLoad(this.gameObject);
+        }
+    }
+    // Use this for initialization
+    void Start () {
 		audios = GetComponents<AudioSource> ();
 	}
 	
