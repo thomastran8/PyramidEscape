@@ -4,14 +4,16 @@ using UnityEngine;
 
 public class MovePotion : MonoBehaviour {
     private Rigidbody potionRB;
-    private float throwForce = 500.0f;
+    private float throwForce = 400.0f;
     private float deleteTimer = 10.0f;
     public GameObject oilExplosion;
+    private Rigidbody playerRB;
 
 	// Use this for initialization
 	void Start () {
+        playerRB = GameObject.FindGameObjectWithTag("Player").GetComponent<Rigidbody>();
         potionRB = GetComponent<Rigidbody>();
-        potionRB.AddForce(Camera.main.transform.forward * throwForce);
+        potionRB.AddForce((Camera.main.transform.forward * throwForce) + (playerRB.velocity * throwForce / 10.0f));
 	}
 	
 	// Update is called once per frame

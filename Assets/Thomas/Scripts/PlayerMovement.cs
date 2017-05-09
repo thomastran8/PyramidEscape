@@ -96,7 +96,7 @@ public class PlayerMovement : MonoBehaviour {
 
 		// Apply movement
 		playerRB.velocity = movement;
-	}
+    }
 
 	void PlayerLook()
 	{
