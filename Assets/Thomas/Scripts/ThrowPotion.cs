@@ -20,7 +20,7 @@ public class ThrowPotion : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (Input.GetButtonDown("Fire1") && pUI.numPotions > 0 && !GameManager.isPaused)
+		if (Input.GetButtonDown("Fire1") && pUI.curPotions > 0 && !GameManager.isPaused)
         {
             sounds[0].Play();
             playerAnimator.SetTrigger("ThrowPotion");

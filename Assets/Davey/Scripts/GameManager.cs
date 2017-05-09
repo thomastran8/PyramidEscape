@@ -9,7 +9,9 @@ public class GameManager : MonoBehaviour {
     public static PlayerUI UI;
 	static public bool isPaused;
 	private GameObject pauseText;
-
+	public Transform playerSpawn;
+	private Vector3 spawn;
+	private int spawnCount = 0;
 
     private static GameManager instance;
 
@@ -23,12 +25,45 @@ public class GameManager : MonoBehaviour {
         }
     }
 
+	public Vector3 getSpawn() {
+		return spawn;
+	}
+
+	void OnEnable() {
+		SceneManager.sceneLoaded += OnSceneLoaded;
+	}
+
+	private void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
+		setPause ();
+//		if (spawnCount != 0) {
+//			respawn ();
+//		}
+//		spawnCount++;
+	}
+
     // Use this for initialization
     void Start () {
-        pauseText = GameObject.Find("Pause text");
-        pauseText.SetActive(false);
+		spawn = playerSpawn.position;
+//		setPause ();
+	}
+
+	public void setSpawn(Transform newSpawn) {
+		playerSpawn = newSpawn;
+		spawn = playerSpawn.position;
+	}
+
+	public void respawn(){
+		Debug.Log ("Respawning");
+		UI.respawn ();
+		player.GetComponent<Transform>().position = playerSpawn.position;
+		SceneManager.LoadScene (SceneManager.GetActiveScene ().buildIndex);
+	}
+
+	public void setPause() {
+		pauseText = GameObject.Find("Pause text");
+		pauseText.SetActive(false);
 		isPaused = false;
-        unpause();
+		unpause();
 	}
 
     // Update is called once per frame

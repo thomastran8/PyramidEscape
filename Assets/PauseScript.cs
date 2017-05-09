@@ -1,12 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
-public class CanvasScript : MonoBehaviour {
+public class PauseScript : MonoBehaviour {
 
 
-//	private static CanvasScript instance;
+
+//		private static PauseScript instance;
 //
 //	private void Awake() {
 //		if (instance != null && instance != this) {
@@ -17,13 +17,13 @@ public class CanvasScript : MonoBehaviour {
 //			DontDestroyOnLoad(this.gameObject);
 //		}
 //	}
-	// Use this for initialization
+//	// Use this for initialization
 	void Start () {
-//        GetComponent<Canvas>().worldCamera = GameObject.Find("Main Camera").GetComponent<Camera>();
-    }
-
-    // Update is called once per frame
-    void Update () {
+		
+	}
+	
+	// Update is called once per frame
+	void Update () {
 		
 	}
 }

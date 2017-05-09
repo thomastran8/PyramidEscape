@@ -6,6 +6,10 @@ public class PlayerUI : MonoBehaviour {
 	private int hp;
     private Text potionText;
     public int numPotions;
+
+	[HideInInspector]
+	public int curPotions;
+
 	private Image[] icons;
 	private Sprite[] heartTypes;
     private GameObject quad;
@@ -14,7 +18,17 @@ public class PlayerUI : MonoBehaviour {
     private void Awake() {
         GameManager.UI = this;
     }
+
+	public void respawn() {
+		hp = 3;
+		this.gameObject.GetComponent<PlayerMovement> ().alive = true;
+		curPotions = numPotions;
+//		UpdateUI();
+	}
+
     void Start () {
+		GameObject.FindGameObjectWithTag("Canvas").GetComponent<Canvas>().worldCamera = GameObject.Find("Main Camera").GetComponent<Camera>();
+		curPotions = numPotions;
         cam = GameObject.Find("Main Camera").GetComponent<Camera>();
         quad = GameObject.FindGameObjectWithTag("Red Flash");
         if (quad == null) {
@@ -42,12 +56,12 @@ public class PlayerUI : MonoBehaviour {
     }
 	
     public void getPotion() {
-        numPotions++;
+        curPotions++;
         UpdateUI();
     }
 
     public void usePotion() {
-        numPotions--;
+        curPotions--;
         UpdateUI();
     }
     /*
@@ -64,7 +78,7 @@ public class PlayerUI : MonoBehaviour {
 				icons [i].sprite = heartTypes [0];
 			}// no health, empty container
 		}
-        potionText.text = numPotions.ToString() + "x";
+        potionText.text = curPotions.ToString() + "x";
 
     }
 
@@ -77,13 +91,17 @@ public class PlayerUI : MonoBehaviour {
     }
 
     IEnumerator cameraPanDown() {
+		Transform orig = cam.gameObject.transform;
         Transform camera = cam.gameObject.transform;
-        while (camera.rotation.x <= 90) {
+		while (camera.rotation.eulerAngles.x <= 70) {
             Vector3 oldRot = camera.rotation.eulerAngles;
-            camera.rotation = Quaternion.Euler(oldRot.x + 3, oldRot.y, oldRot.z + Random.Range(0f,2f)) ;
-            yield return new WaitForSeconds(.1f);
+			Debug.Log (camera.rotation.eulerAngles.x);
+            camera.rotation = Quaternion.Euler(oldRot.x + 1, oldRot.y, oldRot.z + Random.Range(0f,2f)) ;
+            yield return new WaitForSeconds(.03f);
         }
-
+		camera = orig;
+		Debug.Log ("Done panning");
+		GameObject.FindGameObjectWithTag ("GameManager").GetComponent<GameManager> ().respawn ();
         yield break;
     }
 
@@ -99,12 +117,10 @@ public class PlayerUI : MonoBehaviour {
         if (hp <= 0) {
             return false;
         }
-        Debug.Log ("Player recieved " + damage.ToString () + " damage");
         StartCoroutine("Hit");
         hp -= damage;
         UpdateUI ();
 		if (hp == 0) {
-			Debug.Log ("YOU ARE DEAD");
             Death();
 			this.gameObject.GetComponent<PlayerMovement> ().alive = false;
 			return true;
@@ -115,13 +131,13 @@ public class PlayerUI : MonoBehaviour {
 
     IEnumerator Fade() {
         Renderer rend = quad.GetComponent<Renderer>();
-        
-        while (rend.material.color != Color.black) {
-
-            rend.material.color = Color.Lerp(rend.material.color, Color.black, .03f);
-            yield return new WaitForSeconds(.03f);
+		Renderer orig = rend;
+		while (rend.material.color != new Color(0,0,0)) {
+            rend.material.color = Color.Lerp(rend.material.color, Color.black, .06f);
+            yield return new WaitForSeconds(.01f);
         }
-
+		Debug.Log ("Done fading");
+		rend = orig;
         yield break;
     }
 
@@ -129,7 +145,7 @@ public class PlayerUI : MonoBehaviour {
         if (hp <= 0) {
             yield break;
         }//Dont flash if dead
-        Debug.Log("HIT");
+     
         Renderer rend = quad.GetComponent<Renderer>();
         float curAlpha = .9f;
         rend.material.color = new Color (rend.material.color.r, rend.material.color.g, rend.material.color.b, curAlpha);
@@ -138,6 +154,7 @@ public class PlayerUI : MonoBehaviour {
             rend.material.color = new Color(rend.material.color.r, rend.material.color.g, rend.material.color.b, curAlpha);
             yield return new WaitForSeconds(.01f);
         }
+	
 
         yield break;
     }
