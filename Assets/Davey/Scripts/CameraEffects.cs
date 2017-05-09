@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CameraShake : MonoBehaviour {
+public class CameraEffects : MonoBehaviour {
 
     private Vector3 originalPosition;
 
