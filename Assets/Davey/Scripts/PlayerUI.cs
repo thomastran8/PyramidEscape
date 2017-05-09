@@ -68,8 +68,27 @@ public class PlayerUI : MonoBehaviour {
 
     }
 
+    void Death() {
+        Rigidbody rb = GetComponent<Rigidbody>();
+        rb.useGravity = (false);
+        
+        StartCoroutine("cameraPanDown");
+        StartCoroutine(Fade());
+    }
+
+    IEnumerator cameraPanDown() {
+        Transform camera = cam.gameObject.transform;
+        while (camera.rotation.x <= 90) {
+            Vector3 oldRot = camera.rotation.eulerAngles;
+            camera.rotation = Quaternion.Euler(oldRot.x + 3, oldRot.y, oldRot.z + Random.Range(0f,2f)) ;
+            yield return new WaitForSeconds(.1f);
+        }
+
+        yield break;
+    }
+
     public void ShakeCamera(float intensity, float decreasefactor) {
-        cam.GetComponent<CameraShake>().StartShake(intensity, decreasefactor);
+        cam.GetComponent<CameraEffects>().StartShake(intensity, decreasefactor);
     }
 
 	/*
@@ -77,20 +96,39 @@ public class PlayerUI : MonoBehaviour {
 	 * Returns true if player is killed
 	 */
 	bool applyDamage(int damage) {
-        
-		Debug.Log ("Player recieved " + damage.ToString () + " damage");
-		hp -= damage;
+        if (hp <= 0) {
+            return false;
+        }
+        Debug.Log ("Player recieved " + damage.ToString () + " damage");
         StartCoroutine("Hit");
-		UpdateUI ();
-		if (hp <= 0) {
+        hp -= damage;
+        UpdateUI ();
+		if (hp == 0) {
 			Debug.Log ("YOU ARE DEAD");
+            Death();
 			this.gameObject.GetComponent<PlayerMovement> ().alive = false;
 			return true;
 		}
+
 		return false;
 	}
 
+    IEnumerator Fade() {
+        Renderer rend = quad.GetComponent<Renderer>();
+        
+        while (rend.material.color != Color.black) {
+
+            rend.material.color = Color.Lerp(rend.material.color, Color.black, .03f);
+            yield return new WaitForSeconds(.03f);
+        }
+
+        yield break;
+    }
+
     IEnumerator Hit() {
+        if (hp <= 0) {
+            yield break;
+        }//Dont flash if dead
         Debug.Log("HIT");
         Renderer rend = quad.GetComponent<Renderer>();
         float curAlpha = .9f;
