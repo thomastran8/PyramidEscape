@@ -7,9 +7,11 @@ public class LeverActivate : MonoBehaviour {
     public bool useScreenShakeOnActivate = false;
     public GameObject[] activatables;
     private CameraEffects playerCamEffect;
+	private AudioSource[] sounds;
 
 	// Use this for initialization
 	void Start () {
+		sounds = GetComponents<AudioSource> ();
         anim = GetComponent<Animator>();
         playerCamEffect = Camera.main.GetComponent<CameraEffects>();
 	}
@@ -22,7 +24,7 @@ public class LeverActivate : MonoBehaviour {
     public void ActivateLever()
     {
         anim.SetBool("SwitchOn", true);
-
+		sounds [0].Play (); //lever click
         StartCoroutine(WaitToActivate());
     }
 
