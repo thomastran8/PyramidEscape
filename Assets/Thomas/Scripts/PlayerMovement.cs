@@ -170,6 +170,7 @@ public class PlayerMovement : MonoBehaviour {
             camPivot.transform.localPosition = new Vector3(0.0f, initialCamPivotHeight, 0.0f);
             isCrawl = false;
             movementSpeed = initialMovementSpeed;
+            transform.position += new Vector3(0.0f, 0.5f, 0.0f);    // Prevents player from bouncing on transition
         }
     }
 }
