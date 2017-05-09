@@ -120,7 +120,7 @@ public class PlayerMovement : MonoBehaviour {
 	void PlayerJump(Collision collision)
 	{
 		// Player jumps only on collision
-		if (collision != null)
+		if (collision != null && (collision.gameObject.tag != "Enemy"))
 		{
 			Ray groundRay = new Ray(transform.position, Vector3.down);
 			if (Input.GetButton("Jump") && Physics.SphereCast(groundRay, spherecastSize, sphereCastDist))
