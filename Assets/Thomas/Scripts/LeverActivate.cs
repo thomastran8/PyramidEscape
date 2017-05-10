@@ -5,7 +5,8 @@ using UnityEngine;
 public class LeverActivate : MonoBehaviour {
     private Animator anim;
     public bool useScreenShakeOnActivate = false;
-    public GameObject[] activatables;
+    public GameObject[] monsterActivatables;
+    public GameObject[] sceneActivatables;
     private CameraEffects playerCamEffect;
 	private AudioSource[] sounds;
 
@@ -40,9 +41,10 @@ public class LeverActivate : MonoBehaviour {
             playerCamEffect.StartShake(0.1f, 1.0f);
             yield return new WaitForSeconds(8.0f);
         }
-        for (int i = 0; i < activatables.Length; i++)
+        for (int i = 0; i < monsterActivatables.Length; i++)
         {
-            activatables[i].SetActive(true);
+            monsterActivatables[i].SetActive(true);
         }
+        // TODO scene activatables
     }
 }
