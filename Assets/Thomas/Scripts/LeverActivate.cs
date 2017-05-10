@@ -9,7 +9,7 @@ public class LeverActivate : MonoBehaviour {
     public GameObject[] sceneActivatables;
     private CameraEffects playerCamEffect;
 	private AudioSource[] sounds;
-
+	private bool isActivated = false;
 	// Use this for initialization
 	void Start () {
 		sounds = GetComponents<AudioSource> ();
@@ -24,6 +24,10 @@ public class LeverActivate : MonoBehaviour {
 
     public void ActivateLever()
     {
+		if (isActivated) {
+			return;
+		}
+		isActivated = true;
         anim.SetBool("SwitchOn", true);
 		sounds [0].Play (); //lever click
         StartCoroutine(WaitToActivate());
