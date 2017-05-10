@@ -45,6 +45,10 @@ public class LeverActivate : MonoBehaviour {
         {
             monsterActivatables[i].SetActive(true);
         }
-        // TODO scene activatables
+        
+		for (int i = 0; i < sceneActivatables.Length; i++) 
+		{
+			sceneActivatables [i].GetComponent<Activatable>().activate();
+		}
     }
 }
