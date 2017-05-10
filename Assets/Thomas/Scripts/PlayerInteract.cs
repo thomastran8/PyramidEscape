@@ -6,12 +6,14 @@ public class PlayerInteract : MonoBehaviour {
     private Camera playerCam;
     private float interactRange = 1.5f;
     private Animator playerAnim;
+    private PlayerUI pUI;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start () {
         playerCam = Camera.main;
         playerAnim = GameObject.FindGameObjectWithTag("Player").GetComponent<Animator>();
-	}
+        pUI = GetComponent<PlayerUI>();
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -29,6 +31,12 @@ public class PlayerInteract : MonoBehaviour {
 				cp.checkpoint ();
 				playerAnim.SetTrigger("ActivateObject");
 			}
+            PotionPickup potPickup = interactInfoRay.collider.GetComponent<PotionPickup>();
+            if (potPickup)
+            {
+                pUI.getPotion();
+                Destroy(potPickup.gameObject);
+            }
         }
 	}
 }
