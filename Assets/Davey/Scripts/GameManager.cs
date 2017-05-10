@@ -10,7 +10,7 @@ public class GameManager : MonoBehaviour {
 	static public bool isPaused;
 	private GameObject pauseText;
 
-	static private Vector3 spawn; //Stores player spawn position on reload
+	static public Vector3 spawn; //Stores player spawn position on reload
 	static public bool noCheckpoint = true;
     private static GameManager instance;
 
