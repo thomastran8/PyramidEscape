@@ -11,7 +11,7 @@ public class GameManager : MonoBehaviour {
 	private GameObject pauseText;
 
 	static private Vector3 spawn; //Stores player spawn position on reload
-
+	static public bool noCheckpoint = true;
     private static GameManager instance;
 
     private void Awake() {
@@ -26,6 +26,7 @@ public class GameManager : MonoBehaviour {
 
 	static public void nextLevel() {
 		Debug.Log ("Moving to next level");
+		noCheckpoint = true;
 		SceneManager.LoadScene((SceneManager.GetActiveScene().buildIndex + 1));
 	}
 		

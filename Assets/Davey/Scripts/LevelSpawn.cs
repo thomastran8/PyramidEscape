@@ -6,7 +6,8 @@ public class LevelSpawn : MonoBehaviour {
 
 	// Use this for initialization
 	void Awake () {
-		GameManager.setSpawn (this.transform.position);
+		if (GameManager.noCheckpoint == true) {
+			GameManager.setSpawn (this.transform.position);
+		}
 	}
-
 }
