@@ -289,7 +289,7 @@ public class Mummy : MonoBehaviour
 
     void OnTriggerEnter(Collider other) {
         if (health > 0) {
-            if (other.gameObject.name.Contains("FirePotion")) {
+            if (other.gameObject.name.Contains("FireExplosion")) {
                 health--;
                 if (health <= 0) {
                     StartCoroutine("Death");
