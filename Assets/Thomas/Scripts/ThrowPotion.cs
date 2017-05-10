@@ -33,7 +33,7 @@ public class ThrowPotion : MonoBehaviour {
     {
         yield return new WaitForSeconds(0.15f);
         Instantiate(potion, rightHand.transform.position, Quaternion.identity);
-        if (pUI.numPotions == 0)
+        if (pUI.curPotions == 0)
         {
             PotionHold.SetActive(false);
         }
