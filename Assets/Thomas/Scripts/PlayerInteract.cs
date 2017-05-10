@@ -1,24 +1,45 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerInteract : MonoBehaviour {
     private Camera playerCam;
-    private float interactRange = 1.5f;
+    private float interactRange = 1.8f;
     private Animator playerAnim;
     private PlayerUI pUI;
+    private Text interactText;
 
     // Use this for initialization
     void Start () {
         playerCam = Camera.main;
         playerAnim = GameObject.FindGameObjectWithTag("Player").GetComponent<Animator>();
         pUI = GetComponent<PlayerUI>();
+        interactText = GameObject.FindGameObjectWithTag("Canvas").transform.FindChild("InteractText").GetComponent<Text>();
     }
 	
 	// Update is called once per frame
 	void Update () {
         RaycastHit interactInfoRay;
-        if (Input.GetButtonDown("Fire2") && Physics.Raycast(playerCam.transform.position, playerCam.transform.forward, out interactInfoRay, interactRange))
+        bool centerRay = Physics.Raycast(playerCam.transform.position, playerCam.transform.forward, out interactInfoRay, interactRange);
+
+        if (centerRay)
+        {
+            if (interactInfoRay.transform.name.Contains("Lever"))
+            {
+                interactText.text = "Lever";
+            }
+            else if (interactInfoRay.transform.name.Contains("FirePotionPickup"))
+            {
+                interactText.text = "Fire Potion";
+            }
+        }
+        else
+        {
+            interactText.text = "";
+        }
+
+        if (Input.GetButtonDown("Fire2") && centerRay)
         {
             LeverActivate lever = interactInfoRay.collider.GetComponent<LeverActivate>();
             if (lever)
