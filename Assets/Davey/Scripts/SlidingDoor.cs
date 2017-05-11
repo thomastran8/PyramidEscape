@@ -20,7 +20,15 @@ public class SlidingDoor : Activatable {
 
 	}
 
-	IEnumerator Move() {
+    override public void deActivate()
+    {
+        Debug.Log("DeActivated");
+        direction *= -1.0f;
+        StartCoroutine("Move");
+
+    }
+
+    IEnumerator Move() {
 		Vector3 dest = trans.position + (direction * distance);//Move door in direction distance units
 		if (audios.Length > 0) {
 			audios[0].Play();
