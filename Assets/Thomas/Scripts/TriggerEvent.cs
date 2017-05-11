@@ -37,6 +37,7 @@ public class TriggerEvent : MonoBehaviour {
             if (monsterDead == numMonsters)
             {
                 revertScene = true;
+                sounds[0].Play(); //lever click
                 for (int i = 0; i < sceneActivatables.Length; i++)
                 {
                     sceneActivatables[i].GetComponent<Activatable>().deActivate();
