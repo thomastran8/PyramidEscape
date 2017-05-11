@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class LeverActivate : MonoBehaviour {
     private Animator anim;
-    public bool useScreenShakeOnActivate = false;
+    public bool useScreenShake = false;
     public float eventTriggerTime = 2.5f;
     public GameObject[] monsterActivatables;
     public GameObject[] sceneActivatables;
@@ -36,7 +36,7 @@ public class LeverActivate : MonoBehaviour {
 
     IEnumerator WaitToActivate()
     {
-        if (!useScreenShakeOnActivate)
+        if (!useScreenShake)
         {
             yield return new WaitForSeconds(eventTriggerTime);
         }
