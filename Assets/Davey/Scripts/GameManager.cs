@@ -9,7 +9,7 @@ public class GameManager : MonoBehaviour {
     public static PlayerUI UI;
 	static public bool isPaused;
 	private GameObject pauseText;
-
+	private GameObject[] pauseItems;
 	static public Vector3 spawn; //Stores player spawn position on reload
 	static public bool noCheckpoint = true;
     private static GameManager instance;
@@ -26,6 +26,7 @@ public class GameManager : MonoBehaviour {
     }
 
 	static public void nextLevel() {
+		
 		Debug.Log ("Moving to next level");
 		noCheckpoint = true;
 		int nextScene = (SceneManager.GetActiveScene ().buildIndex + 1);
@@ -38,6 +39,11 @@ public class GameManager : MonoBehaviour {
 	}
 
 	private void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
+		Debug.Log (scene.buildIndex);
+		if (scene.buildIndex == 0) {
+			Destroy (this.gameObject);
+			return;
+		}
 		DynamicGI.UpdateEnvironment (); // Fix lighting
 		setPause (); // remove pause text
 		player.GetComponent<Transform>().position = spawn;
@@ -53,7 +59,7 @@ public class GameManager : MonoBehaviour {
 
 	public void setPause() {
 		pauseText = GameObject.Find("Pause text");
-		pauseText.SetActive(false);
+		pauseItems = GameObject.FindGameObjectsWithTag ("Pause Item");
 		isPaused = false;
 		unpause();
 	}
@@ -76,14 +82,20 @@ public class GameManager : MonoBehaviour {
 	public void unpause() {
 		Debug.Log ("unpausing");
 		Time.timeScale = 1;
-		pauseText.SetActive (false);
+		foreach (GameObject item in pauseItems) {
+			item.SetActive (false);
+		}
+		pauseText.GetComponent<Text>().color = new Color (0,0,0,0);
 		isPaused = false;
 	}
 
 	public void pause() {
+		foreach (GameObject item in pauseItems) {
+			item.SetActive (true);
+		}
+		pauseText.GetComponent<Text>().color = new Color (0,0,0,255);
 		Cursor.lockState = CursorLockMode.None;
 		Cursor.lockState = CursorLockMode.None;
-		pauseText.SetActive (true);
 		isPaused = true;
 		Time.timeScale = 0;
 	}
