@@ -15,7 +15,7 @@ public class PlayerInteract : MonoBehaviour {
         playerCam = Camera.main;
         playerAnim = GameObject.FindGameObjectWithTag("Player").GetComponent<Animator>();
         pUI = GetComponent<PlayerUI>();
-        interactText = GameObject.FindGameObjectWithTag("Canvas").transform.FindChild("InteractText").GetComponent<Text>();
+        interactText = GameObject.Find("InteractCanvas").transform.FindChild("InteractText").GetComponent<Text>();
     }
 	
 	// Update is called once per frame
