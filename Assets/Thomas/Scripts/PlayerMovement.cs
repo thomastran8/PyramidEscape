@@ -40,9 +40,13 @@ public class PlayerMovement : MonoBehaviour {
     private float crawlSpeed = 0.2f;
     public bool isCrouched = false;
     public bool isCrawl = false;
+    private bool safeToStand = false;
+    private float playerCrawlSize = 0.3f;
+    private float initialCapsuleRadius;
+    private float standUpHeight = 2.0f;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start () {
 		playerRB = GetComponent<Rigidbody>();
 		playerCam = Camera.main;
         camPivot = gameObject.transform.Find("PlayerBody").FindChild("CamPivot").gameObject;
@@ -58,6 +62,7 @@ public class PlayerMovement : MonoBehaviour {
         initialCamHeight = playerCam.transform.localPosition.y;
         initialCamPivotHeight = camPivot.transform.localPosition.y;
         initialMovementSpeed = movementSpeed;
+        initialCapsuleRadius = playerCapsule.radius;
     }
 
     // Update is called once per frame
@@ -146,6 +151,16 @@ public class PlayerMovement : MonoBehaviour {
 
     void PlayerCrouchCrawl()
     {
+        Ray upRay = new Ray(transform.position, Vector3.up);
+        if (Physics.SphereCast(upRay, spherecastSize, standUpHeight))
+        {
+            safeToStand = false;
+        }
+        else
+        {
+            safeToStand = true;
+        }
+
         // Crouch
         if ((Input.GetButtonDown("Crouch") && !isCrouched && !isCrawl))
         {
@@ -159,6 +174,7 @@ public class PlayerMovement : MonoBehaviour {
         else if (Input.GetButtonDown("Crouch") && isCrouched && !isCrawl)
         {
             playerCapsule.height = initialColliderHeight * crawlHeight;
+            playerCapsule.radius = playerCrawlSize;
             playerCam.transform.localPosition = new Vector3(0.0f, initialCamHeight * crawlHeight, 0.0f);
             camPivot.transform.localPosition = new Vector3(0.0f, initialCamPivotHeight * crawlHeight, 0.0f);
             isCrouched = false;
@@ -166,9 +182,10 @@ public class PlayerMovement : MonoBehaviour {
             movementSpeed = initialMovementSpeed * crawlSpeed;
         }
         // Stand
-        else if (Input.GetButtonDown("Crouch") && !isCrouched && isCrawl)
+        else if (Input.GetButtonDown("Crouch") && !isCrouched && isCrawl && safeToStand)
         {
             playerCapsule.height = initialColliderHeight;
+            playerCapsule.radius = initialCapsuleRadius;
             playerCam.transform.localPosition = new Vector3(0.0f, initialCamHeight, 0.0f);
             camPivot.transform.localPosition = new Vector3(0.0f, initialCamPivotHeight, 0.0f);
             isCrawl = false;
