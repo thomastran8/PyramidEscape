@@ -9,25 +9,28 @@ public class GameManager : MonoBehaviour {
     public static PlayerUI UI;
 	static public bool isPaused;
 	private GameObject pauseText;
-
+	private GameObject[] pauseItems;
 	static public Vector3 spawn; //Stores player spawn position on reload
 	static public bool noCheckpoint = true;
     private static GameManager instance;
 
     private void Awake() {
-        if (instance != null && instance != this) {
+		if (instance != null && instance != this || SceneManager.GetActiveScene().name == "MainMenu") {
             Destroy(this.gameObject);
         }
         else {
             instance = this;
+		
             DontDestroyOnLoad(this.gameObject);
         }
     }
 
 	static public void nextLevel() {
+		
 		Debug.Log ("Moving to next level");
 		noCheckpoint = true;
-		SceneManager.LoadScene((SceneManager.GetActiveScene().buildIndex + 1));
+		int nextScene = (SceneManager.GetActiveScene ().buildIndex + 1);
+		SceneManager.LoadScene(nextScene);
 	}
 		
 
@@ -36,6 +39,11 @@ public class GameManager : MonoBehaviour {
 	}
 
 	private void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
+		Debug.Log (scene.buildIndex);
+		if (scene.buildIndex == 0) {
+			Destroy (this.gameObject);
+			return;
+		}
 		DynamicGI.UpdateEnvironment (); // Fix lighting
 		setPause (); // remove pause text
 		player.GetComponent<Transform>().position = spawn;
@@ -51,7 +59,7 @@ public class GameManager : MonoBehaviour {
 
 	public void setPause() {
 		pauseText = GameObject.Find("Pause text");
-		pauseText.SetActive(false);
+		pauseItems = GameObject.FindGameObjectsWithTag ("Pause Item");
 		isPaused = false;
 		unpause();
 	}
@@ -67,19 +75,33 @@ public class GameManager : MonoBehaviour {
             }
         }
         if (Input.GetKeyDown(KeyCode.R)) {
-            SceneManager.LoadScene((SceneManager.GetActiveScene().buildIndex + 1) % 2);
+			SceneManager.LoadScene((SceneManager.GetActiveScene().buildIndex + 1) % Application.levelCount);
         }
     }
 
-	void unpause() {
+	public void unpause() {
+		Debug.Log ("unpausing");
 		Time.timeScale = 1;
-		pauseText.SetActive (false);
+		foreach (GameObject item in pauseItems) {
+			item.SetActive (false);
+		}
+		pauseText.GetComponent<Text>().color = new Color (0,0,0,0);
 		isPaused = false;
 	}
 
-	void pause() {
-		pauseText.SetActive (true);
+	public void pause() {
+		foreach (GameObject item in pauseItems) {
+			item.SetActive (true);
+		}
+		pauseText.GetComponent<Text>().color = new Color (0,0,0,255);
+		Cursor.lockState = CursorLockMode.None;
+		Cursor.lockState = CursorLockMode.None;
 		isPaused = true;
 		Time.timeScale = 0;
+	}
+
+	public void backToMainMenu() {
+		Debug.Log ("Main menu");
+		SceneManager.LoadScene (0);
 	}
 }

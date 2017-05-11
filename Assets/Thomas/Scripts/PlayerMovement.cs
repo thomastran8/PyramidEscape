@@ -63,6 +63,9 @@ public class PlayerMovement : MonoBehaviour {
     // Update is called once per frame
     void Update ()
 	{
+		if (GameManager.isPaused) {
+			return;
+		}//Allow user to click pause menu buttons
 		Cursor.lockState = CursorLockMode.Confined;
 		Cursor.lockState = CursorLockMode.Locked;
         PlayerCrouchCrawl();

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class AudioManager : MonoBehaviour {
 	public float ambienceChance = .1f;
@@ -14,6 +15,14 @@ public class AudioManager : MonoBehaviour {
 
     private static AudioManager instance;
 
+	void OnEnable() {
+		SceneManager.sceneLoaded += OnSceneLoaded; // call this function when scene loads
+	}
+
+	private void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
+		setBackgroundMusic (scene.buildIndex);
+	}
+
     private void Awake() {
         if (instance != null && instance != this) {
             Destroy(this.gameObject);
@@ -21,13 +30,10 @@ public class AudioManager : MonoBehaviour {
         else {
             instance = this;
             DontDestroyOnLoad(this.gameObject);
+			audios = GetComponents<AudioSource> ();
         }
     }
-    // Use this for initialization
-    void Start () {
-		audios = GetComponents<AudioSource> ();
-	}
-	
+
 	// Update is called once per frame
 	void Update () {
 		ambience ();
@@ -65,6 +71,23 @@ public class AudioManager : MonoBehaviour {
 		}
 		else {
 			ambienceCheckTimer -= Time.deltaTime;
+		}
+	}
+
+	private void setBackgroundMusic(int scene) {
+		switch (scene) {
+
+		case 0:
+			audios [5].Play ();
+			break;
+		case 1:
+			audios [5].Stop ();
+			break;
+		
+		default:
+			Debug.Log ("No music for this level");
+			break;
+
 		}
 	}
 }
