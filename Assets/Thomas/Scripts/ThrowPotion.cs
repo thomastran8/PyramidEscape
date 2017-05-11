@@ -8,7 +8,7 @@ public class ThrowPotion : MonoBehaviour {
     private GameObject rightHand;
     private AudioSource[] sounds;
     private PlayerUI pUI;
-    private GameObject PotionHold;
+    static public GameObject PotionHold;
 	// Use this for initialization
 	void Start () {
         sounds = GetComponents<AudioSource>();

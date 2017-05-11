@@ -60,6 +60,10 @@ public class PlayerInteract : MonoBehaviour {
             if (potPickup)
             {
                 pUI.getPotion();
+                if (pUI.curPotions > 0)
+                {
+                    ThrowPotion.PotionHold.SetActive(true);
+                }
                 Destroy(potPickup.gameObject);
             }
         }
