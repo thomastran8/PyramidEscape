@@ -57,7 +57,7 @@ public class TriggerEvent : MonoBehaviour {
             return;
         }
 
-        if (other.gameObject.tag == "Player")
+        if (other.gameObject.transform.parent.tag == "Player")
         {
             isActivated = true;
             sounds[0].Play(); //lever click
