@@ -33,6 +33,10 @@ public class PlayerInteract : MonoBehaviour {
             {
                 interactText.text = "Fire Potion";
             }
+            else if (interactInfoRay.transform.name.Contains("CheckpointTable"))
+            {
+                interactText.text = "Check Point Table";
+            }
         }
         else
         {
