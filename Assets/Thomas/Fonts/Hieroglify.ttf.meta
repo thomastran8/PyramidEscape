@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: fe3d8586277d2d643ab7844797b18eb7
+timeCreated: 1494489099
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Hieroglify
+  fontNames:
+  - Hieroglify
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
