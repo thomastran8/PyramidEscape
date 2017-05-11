@@ -50,15 +50,19 @@ public class TriggerEvent : MonoBehaviour {
         }
     }
 
-    void OnTriggerEnter()
+    void OnTriggerEnter(Collider other)
     {
         if (isActivated)
         {
             return;
         }
-        isActivated = true;
-        sounds[0].Play(); //lever click
-        StartCoroutine(WaitToActivate());
+
+        if (other.gameObject.transform.parent.tag == "Player")
+        {
+            isActivated = true;
+            sounds[0].Play(); //lever click
+            StartCoroutine(WaitToActivate());
+        }
     }
 
     IEnumerator WaitToActivate()
