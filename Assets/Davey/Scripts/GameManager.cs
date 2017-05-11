@@ -15,11 +15,12 @@ public class GameManager : MonoBehaviour {
     private static GameManager instance;
 
     private void Awake() {
-        if (instance != null && instance != this) {
+		if (instance != null && instance != this || SceneManager.GetActiveScene().name == "MainMenu") {
             Destroy(this.gameObject);
         }
         else {
             instance = this;
+		
             DontDestroyOnLoad(this.gameObject);
         }
     }
@@ -27,7 +28,8 @@ public class GameManager : MonoBehaviour {
 	static public void nextLevel() {
 		Debug.Log ("Moving to next level");
 		noCheckpoint = true;
-		SceneManager.LoadScene((SceneManager.GetActiveScene().buildIndex + 1));
+		int nextScene = (SceneManager.GetActiveScene ().buildIndex + 1);
+		SceneManager.LoadScene(nextScene);
 	}
 		
 
@@ -67,19 +69,27 @@ public class GameManager : MonoBehaviour {
             }
         }
         if (Input.GetKeyDown(KeyCode.R)) {
-            SceneManager.LoadScene((SceneManager.GetActiveScene().buildIndex + 1) % 2);
+			SceneManager.LoadScene((SceneManager.GetActiveScene().buildIndex + 1) % Application.levelCount);
         }
     }
 
-	void unpause() {
+	public void unpause() {
+		Debug.Log ("unpausing");
 		Time.timeScale = 1;
 		pauseText.SetActive (false);
 		isPaused = false;
 	}
 
-	void pause() {
+	public void pause() {
+		Cursor.lockState = CursorLockMode.None;
+		Cursor.lockState = CursorLockMode.None;
 		pauseText.SetActive (true);
 		isPaused = true;
 		Time.timeScale = 0;
+	}
+
+	public void backToMainMenu() {
+		Debug.Log ("Main menu");
+		SceneManager.LoadScene (0);
 	}
 }
