@@ -6,4 +6,9 @@ abstract public class Activatable : MonoBehaviour {
 	virtual public void activate() {
 		
 	}
+
+    virtual public void deActivate()
+    {
+
+    }
 }

@@ -4,23 +4,50 @@ using UnityEngine;
 
 public class TriggerEvent : MonoBehaviour {
     public bool useScreenShake = false;
+    public bool killEnemiesToRevert = false;
     public float eventTriggerTime = 0.2f;
+    private bool revertScene = false;
     public GameObject[] monsterActivatables;
     public GameObject[] sceneActivatables;
     private CameraEffects playerCamEffect;
     private AudioSource[] sounds;
     private bool isActivated = false;
+    private int monsterDead = 0;
+    private int numMonsters;
 
     // Use this for initialization
     void Start () {
         sounds = GetComponents<AudioSource>();
         playerCamEffect = Camera.main.GetComponent<CameraEffects>();
+        numMonsters = monsterActivatables.Length;
     }
 	
 	// Update is called once per frame
 	void Update () {
-		
-	}
+        if (isActivated && killEnemiesToRevert && !revertScene)
+        {
+            for (int i = 0; i < monsterActivatables.Length; i++)
+            {
+                if (!monsterActivatables[i])
+                {
+                    monsterDead++;
+                }
+            }
+
+            if (monsterDead == numMonsters)
+            {
+                revertScene = true;
+                for (int i = 0; i < sceneActivatables.Length; i++)
+                {
+                    sceneActivatables[i].GetComponent<Activatable>().deActivate();
+                }
+            }
+            else
+            {
+                monsterDead = 0;
+            }
+        }
+    }
 
     void OnTriggerEnter()
     {
