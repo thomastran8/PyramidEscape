@@ -8,6 +8,7 @@ public class LevelSpawn : MonoBehaviour {
 	void Awake () {
 		if (GameManager.noCheckpoint == true) {
 			GameManager.setSpawn (this.transform.position);
+            GameManager.setRotation(this.transform.rotation);
 		}
 	}
 }

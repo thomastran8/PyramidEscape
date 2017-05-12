@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour {
 	private GameObject pauseText;
 	private GameObject[] pauseItems;
 	static public Vector3 spawn; //Stores player spawn position on reload
+    static public Quaternion spawnRotation;
 	static public bool noCheckpoint = true;
     private static GameManager instance;
 
@@ -47,13 +48,19 @@ public class GameManager : MonoBehaviour {
 		DynamicGI.UpdateEnvironment (); // Fix lighting
 		setPause (); // remove pause text
 		player.GetComponent<Transform>().position = spawn;
+        player.GetComponent<Transform>().rotation = spawnRotation;
 	}
 		
 	static public void setSpawn(Vector3 newSpawn) {
 		spawn = newSpawn;
 	}
 
-	public void respawn(){
+    static public void setRotation(Quaternion newRotation)
+    {
+        spawnRotation = newRotation;
+    }
+
+    public void respawn(){
 		SceneManager.LoadScene (SceneManager.GetActiveScene ().buildIndex);
 	}
 
