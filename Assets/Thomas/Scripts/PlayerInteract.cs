@@ -37,6 +37,10 @@ public class PlayerInteract : MonoBehaviour {
             {
                 interactText.text = "Check Point Table";
             }
+            else if (interactInfoRay.transform.name.Contains("chest_epic_gems"))
+            {
+                interactText.text = "Treasure Chest";
+            }
         }
         else
         {
@@ -65,6 +69,13 @@ public class PlayerInteract : MonoBehaviour {
                     ThrowPotion.PotionHold.SetActive(true);
                 }
                 Destroy(potPickup.gameObject);
+            }
+
+            ChestInteract treasureChest = interactInfoRay.collider.GetComponentInParent<ChestInteract>();
+            if (treasureChest)
+            {
+                treasureChest.openChest();
+                playerAnim.SetTrigger("ActivateObject");
             }
         }
 	}
