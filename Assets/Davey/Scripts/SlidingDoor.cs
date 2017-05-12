@@ -9,6 +9,8 @@ public class SlidingDoor : Activatable {
 	public Vector3 direction;
 	private AudioSource[] audios;
 	private Transform trans;
+    float marginOfError = 0.2f;
+    Vector3 distanceFromDest;
 	void Awake() {
 		audios = GetComponents<AudioSource> ();
 		trans = GetComponent<Transform> ();
@@ -34,10 +36,13 @@ public class SlidingDoor : Activatable {
 			audios[0].Play();
 		}
 
+        distanceFromDest = trans.position - dest;
+
 		yield return new WaitForSeconds (.5f);
-		while (trans.position != dest) {
+		while (distanceFromDest.x <= marginOfError && distanceFromDest.y <= marginOfError && distanceFromDest.z <= marginOfError) {
 			trans.position = trans.position + (direction * speed);
-			yield return new WaitForSeconds (.01f);
+            distanceFromDest = trans.position - dest;   //update distance
+            yield return new WaitForSeconds (.01f);
 		}
 
 		if (audios.Length > 0) {
