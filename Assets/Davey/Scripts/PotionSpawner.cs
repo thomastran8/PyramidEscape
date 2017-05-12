@@ -27,7 +27,6 @@ public class PotionSpawner : Activatable {
 	}
 
     IEnumerator SpawnPotion() {
-		Debug.Log ("Spawning potions");
         while (true) {
             Instantiate(potion, transform.position, Quaternion.identity);
 			yield return new WaitForSeconds(secondsPerPotion);
