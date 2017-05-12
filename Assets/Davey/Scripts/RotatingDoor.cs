@@ -8,11 +8,25 @@ public class RotatingDoor : Activatable {
 	public float degrees;
 	private AudioSource[] audios;
 	private Transform trans;
+    private bool positiveDegree = false;
+    private float finalRotation;
 	void Awake() {
 		audios = GetComponents<AudioSource> ();
 		trans = GetComponent<Transform> ();
 	}
 	override public void activate() {
+        if (degrees >= 0)
+            positiveDegree = true;
+        else
+            positiveDegree = false;
+        if (positiveDegree)
+        {
+            finalRotation = trans.rotation.eulerAngles.y + degrees;
+        }
+        else
+        {
+            finalRotation = trans.rotation.eulerAngles.y + degrees;
+        }
 		Debug.Log ("Activated");
 		StartCoroutine ("Move");
 
@@ -25,13 +39,27 @@ public class RotatingDoor : Activatable {
 		}
 
 		yield return new WaitForSeconds (.5f);
-		while (trans.rotation.eulerAngles.y <= degrees) {
-			
-			trans.Rotate (0, 1 * speed, 0);
-			yield return new WaitForSeconds (.01f);
-		}
 
-		if (audios.Length > 0) {
+        if (trans.rotation.eulerAngles.y < finalRotation)
+        {
+            while (trans.rotation.eulerAngles.y <= finalRotation)
+            {
+
+                trans.Rotate(0, 1 * speed, 0);
+                yield return new WaitForSeconds(.01f);
+            }
+        }
+        else
+        {
+            while (trans.rotation.eulerAngles.y >= finalRotation)
+            {
+
+                trans.Rotate(0, 1 * -speed, 0);
+                yield return new WaitForSeconds(.01f);
+            }
+        }
+
+        if (audios.Length > 0) {
 			audios[0].Stop();
 		}
 		yield break;
