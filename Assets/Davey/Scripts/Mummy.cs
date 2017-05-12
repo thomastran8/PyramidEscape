@@ -11,7 +11,7 @@ public class Mummy : MonoBehaviour
     public Transform[] posts; /* posts to patrol between */
 
     protected int damage = 1; //Damage done to player
-    private float detectionRange = 30f; //When enemy begins to chase
+    public float detectionRange = 30f; //When enemy begins to chase
     protected float attackRange = 2f; //When enemy begins attack animation
     protected float attackTimeStart = .2f; //Time between enemy animation and damage proc
     protected float attackTimeEnd = .5f;
