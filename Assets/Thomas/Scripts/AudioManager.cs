@@ -13,6 +13,8 @@ public class AudioManager : MonoBehaviour {
 	public float growlsTimerMax = 10f;
 	AudioSource[] audios;
 
+    private int sceneNum;
+
     private static AudioManager instance;
 
 	void OnEnable() {
@@ -20,8 +22,10 @@ public class AudioManager : MonoBehaviour {
 	}
 
 	private void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
-		setBackgroundMusic (scene.buildIndex);
-	}
+        sceneNum = scene.buildIndex;
+        setBackgroundMusic (sceneNum);
+        setSound(sceneNum);
+    }
 
     private void Awake() {
         if (instance != null && instance != this) {
@@ -36,6 +40,10 @@ public class AudioManager : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
+        if (sceneNum == 1)
+        {
+            return;
+        }
 		ambience ();
 		growls ();
 	}
@@ -90,4 +98,22 @@ public class AudioManager : MonoBehaviour {
 
 		}
 	}
+
+    private void setSound(int scene)
+    {
+        switch (scene)
+        {
+            case 1:
+                audios[2].mute = true;
+                audios[6].Play();
+                break;
+            case 2:
+                audios[2].mute = false;
+                audios[6].Stop();
+                break;
+
+            default:
+                break;
+        }
+    }
 }
