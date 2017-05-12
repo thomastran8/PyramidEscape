@@ -40,7 +40,7 @@ public class AudioManager : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-        if (sceneNum == 1)
+        if (sceneNum == 1 || sceneNum == 7)
         {
             return;
         }
@@ -110,6 +110,10 @@ public class AudioManager : MonoBehaviour {
             case 2:
                 audios[2].mute = false;
                 audios[6].Stop();
+                break;
+            case 7:
+                audios[2].mute = true;
+                audios[6].Play();
                 break;
 
             default:
