@@ -17,7 +17,6 @@ public class SlidingDoor : Activatable {
 		direction = direction.normalized;
 	}
 	override public void activate() {
-		Debug.Log ("Activated");
 		StartCoroutine ("Move");
 
 	}

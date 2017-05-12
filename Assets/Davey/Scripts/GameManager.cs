@@ -40,7 +40,6 @@ public class GameManager : MonoBehaviour {
 	}
 
 	private void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
-		Debug.Log (scene.buildIndex);
 		if (scene.buildIndex == 0) {
 			return;
 			Destroy (this.gameObject);
