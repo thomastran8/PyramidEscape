@@ -100,7 +100,7 @@ public class GameManager : MonoBehaviour {
 		foreach (GameObject item in pauseItems) {
 			item.SetActive (true);
 		}
-		pauseText.GetComponent<Text>().color = new Color (0,0,0,255);
+		pauseText.GetComponent<Text>().color = new Color (255,255,255,255);
 		Cursor.lockState = CursorLockMode.None;
 		Cursor.lockState = CursorLockMode.None;
 		isPaused = true;

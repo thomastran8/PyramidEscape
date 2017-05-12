@@ -5,8 +5,11 @@ using UnityEngine;
 public class Weapon_Mummy : Mummy {
     public string weaponType;
     private float threatenTime = 2f;
+
+
     override public void startAttack() {
-        stopWalking();
+		transform.LookAt(player.transform);
+		stopWalking();
         stopSound();
         rb.velocity = Vector3.zero;
         animStartTime = Time.time;
@@ -142,6 +145,8 @@ public class Weapon_Mummy : Mummy {
             return;
         }
         if ((transform.position - posts[curPost].transform.position).magnitude <= 5 && numPosts != 1) {
+			Debug.Log (curPost);
+			Debug.Log (numPosts);
             curPost = (curPost + 1) % numPosts;
             if (weaponType != "Axe") {
                 anim.SetTrigger("Threaten");

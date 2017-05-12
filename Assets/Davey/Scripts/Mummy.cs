@@ -226,7 +226,7 @@ public class Mummy : MonoBehaviour
     }
 
     public virtual void startAttack() {
-        //		transform.LookAt(player.transform);
+        transform.LookAt(player.transform);
         stopWalking();
         stopSound();
         rb.velocity = Vector3.zero;
@@ -238,7 +238,7 @@ public class Mummy : MonoBehaviour
 
 
 
-    IEnumerator footsteps() {
+    public virtual IEnumerator footsteps() {
         int foot = 0;
 
         while (true) {
