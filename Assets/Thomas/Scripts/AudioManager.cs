@@ -40,7 +40,7 @@ public class AudioManager : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-        if (sceneNum == 1 || sceneNum == 7)
+        if (sceneNum == 1 || sceneNum == 6)
         {
             return;
         }
