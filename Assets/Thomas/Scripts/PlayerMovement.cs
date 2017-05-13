@@ -10,9 +10,11 @@ public class PlayerMovement : MonoBehaviour {
 
 	// Movement control
 	private float movementSpeed = 400.0f;
-	private float jumpSpeed = 100.0f;
+	private float jumpSpeed = 200.0f;
 	private float sphereCastDist = 1.0f;
 	private float spherecastSize = 0.4f;
+    private float cooldownJump = 0.5f;
+    private float jumpTimer;
 
 	// Movement feel
 	private Vector3 movement;
@@ -51,6 +53,8 @@ public class PlayerMovement : MonoBehaviour {
 		playerCam = Camera.main;
         camPivot = gameObject.transform.Find("PlayerBody").FindChild("CamPivot").gameObject;
 
+        jumpTimer = cooldownJump;
+
 		// Get starting rotation
 		Vector3 rot = transform.localRotation.eulerAngles;
 		rotY = rot.y;
@@ -74,6 +78,8 @@ public class PlayerMovement : MonoBehaviour {
 		Cursor.lockState = CursorLockMode.Confined;
 		Cursor.lockState = CursorLockMode.Locked;
         PlayerCrouchCrawl();
+        if (jumpTimer > 0.0f)
+            jumpTimer -= Time.deltaTime;
     }
 
 	void FixedUpdate()
@@ -128,12 +134,13 @@ public class PlayerMovement : MonoBehaviour {
 	void PlayerJump(Collision collision)
 	{
 		// Player jumps only on collision
-		if (collision != null && (collision.gameObject.tag != "Enemy"))
+		if (collision != null && (collision.gameObject.tag != "Enemy") && jumpTimer < 0.0f)
 		{
 			Ray groundRay = new Ray(transform.position, Vector3.down);
 			if (Input.GetButton("Jump") && Physics.SphereCast(groundRay, spherecastSize, sphereCastDist))
 			{
 				playerRB.AddForce(Vector3.up * jumpSpeed);
+                jumpTimer = cooldownJump;
 			}
 		}
 	}
