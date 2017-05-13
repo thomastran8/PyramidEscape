@@ -41,13 +41,11 @@ public class GameManager : MonoBehaviour {
 
 	private void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
 		if (scene.buildIndex == 0) {
-			return;
 			Destroy (this.gameObject);
 			Destroy (this);
 
 			return;
 		}
-		DynamicGI.UpdateEnvironment (); // Fix lighting
 		setPause (); // remove pause text
 		player.GetComponent<Transform>().position = spawn;
         player.GetComponent<Transform>().rotation = spawnRotation;
@@ -89,7 +87,6 @@ public class GameManager : MonoBehaviour {
     }
 
 	public void unpause() {
-		Debug.Log ("unpausing");
 		Time.timeScale = 1;
 		foreach (GameObject item in pauseItems) {
 			item.SetActive (false);

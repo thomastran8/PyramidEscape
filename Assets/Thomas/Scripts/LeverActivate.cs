@@ -38,13 +38,17 @@ public class LeverActivate : MonoBehaviour {
     {
         if (!useScreenShake)
         {
+			
             yield return new WaitForSeconds(eventTriggerTime);
         }
         else
         {
+			
             yield return new WaitForSeconds(2.0f);
+			sounds [1].Play ();
             playerCamEffect.StartShake(0.1f, 1.0f);
             yield return new WaitForSeconds(8.0f);
+			sounds [1].Stop();
         }
         for (int i = 0; i < monsterActivatables.Length; i++)
         {
