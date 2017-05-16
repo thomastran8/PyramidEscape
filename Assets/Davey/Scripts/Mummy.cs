@@ -47,8 +47,9 @@ public class Mummy : MonoBehaviour
     protected AudioSource[] audios;
     protected Animator anim;
     protected Rigidbody rb;
-
+    protected Transform trans;
     private void Awake() {
+        trans = GetComponent<Transform>();
         audios = GetComponents<AudioSource>();
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();
@@ -60,6 +61,11 @@ public class Mummy : MonoBehaviour
         player = GameManager.player;
         anim.updateMode = AnimatorUpdateMode.AnimatePhysics;
 
+    }
+
+    protected virtual void Update() {
+        Vector3 oldRot = transform.rotation.eulerAngles;
+        transform.rotation = Quaternion.Euler(0, oldRot.y, 0);
     }
 
     virtual public bool attack(Vector3 dist) {
@@ -77,6 +83,7 @@ public class Mummy : MonoBehaviour
     }
 
     void FixedUpdate() {
+        
         if (isDead || isDamaged) {
             rb.velocity = Vector3.zero;
             anim.ResetTrigger("Run");
