@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class PlayerInteract : MonoBehaviour {
     private Camera playerCam;
-    private float interactRange = 1.8f;
+    private float interactRange = 2.0f;
     private Animator playerAnim;
     private Text interactText;
     private AudioSource[] sounds;
