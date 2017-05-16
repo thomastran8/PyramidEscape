@@ -7,15 +7,15 @@ public class PlayerInteract : MonoBehaviour {
     private Camera playerCam;
     private float interactRange = 1.8f;
     private Animator playerAnim;
-    private PlayerUI pUI;
     private Text interactText;
+    private AudioSource[] sounds;
 
     // Use this for initialization
     void Start () {
         playerCam = Camera.main;
         playerAnim = GameObject.FindGameObjectWithTag("Player").GetComponent<Animator>();
-        pUI = GetComponent<PlayerUI>();
         interactText = GameObject.Find("InteractCanvas").transform.FindChild("InteractText").GetComponent<Text>();
+        sounds = GetComponents<AudioSource>();
     }
 	
 	// Update is called once per frame
@@ -63,12 +63,9 @@ public class PlayerInteract : MonoBehaviour {
             PotionPickup potPickup = interactInfoRay.collider.GetComponent<PotionPickup>();
             if (potPickup)
             {
-                pUI.getPotion();
-                if (pUI.curPotions > 0)
-                {
-                    ThrowPotion.PotionHold.SetActive(true);
-                }
-                Destroy(potPickup.gameObject);
+                potPickup.pickupPotion();
+                playerAnim.SetTrigger("ActivateObject");
+                sounds[1].Play();
             }
 
             ChestInteract treasureChest = interactInfoRay.collider.GetComponentInParent<ChestInteract>();
