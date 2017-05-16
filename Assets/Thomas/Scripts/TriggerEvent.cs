@@ -30,6 +30,7 @@ public class TriggerEvent : MonoBehaviour {
             {
                 if (!monsterActivatables[i])
                 {
+                    Debug.Log("Something died");
                     monsterDead++;
                 }
             }
@@ -40,6 +41,7 @@ public class TriggerEvent : MonoBehaviour {
                 sounds[0].Play(); //lever click
                 for (int i = 0; i < sceneActivatables.Length; i++)
                 {
+                    Debug.Log("Reverring");
                     sceneActivatables[i].GetComponent<Activatable>().deActivate();
                 }
             }
@@ -74,7 +76,7 @@ public class TriggerEvent : MonoBehaviour {
         else
         {
             yield return new WaitForSeconds(2.0f);
-            playerCamEffect.StartShake(0.1f, 1.0f);
+            playerCamEffect.StartShake(1f, 1.0f);
             yield return new WaitForSeconds(8.0f);
         }
         for (int i = 0; i < monsterActivatables.Length; i++)

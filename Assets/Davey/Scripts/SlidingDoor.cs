@@ -30,17 +30,27 @@ public class SlidingDoor : Activatable {
     }
 
     IEnumerator Move() {
+        Debug.Log(trans.position + (direction * distance));
 		Vector3 dest = trans.position + (direction * distance);//Move door in direction distance units
 		if (audios.Length > 0) {
 			audios[0].Play();
 		}
-
+        Vector3 startpos = this.transform.position;
         distanceFromDest = trans.position - dest;
-
+        Debug.Log("Dist: " + distanceFromDest.ToString());
 		yield return new WaitForSeconds (.5f);
-		while (distanceFromDest.x <= marginOfError && distanceFromDest.y <= marginOfError && distanceFromDest.z <= marginOfError) {
-			trans.position = trans.position + (direction * speed);
-            distanceFromDest = trans.position - dest;   //update distance
+        float startTime = Time.time;
+        Debug.Log("DistY: " + distanceFromDest.y.ToString());
+        float distCovered = (Time.time - startTime) * speed * 30;
+        float fracJourney = distCovered / distanceFromDest.magnitude;
+        while (fracJourney < .99) {
+             distCovered = (Time.time - startTime) * speed * 30;
+             fracJourney = distCovered / distanceFromDest.magnitude;
+            transform.position = Vector3.Lerp(startpos, dest, fracJourney);
+            //Debug.Log("Dist2: " + distanceFromDest.ToString());
+            //trans.position = trans.position + (direction * speed);
+
+            //distanceFromDest = trans.position - dest;   //update distance
             yield return new WaitForSeconds (.01f);
 		}
 

@@ -46,8 +46,8 @@ public class LeverActivate : MonoBehaviour {
 			
             yield return new WaitForSeconds(2.0f);
 			sounds [1].Play ();
-            playerCamEffect.StartShake(0.1f, 1.0f);
-            yield return new WaitForSeconds(8.0f);
+            playerCamEffect.StartShake(0.1f, 3f);
+            yield return new WaitForSeconds(4.0f);
 			sounds [1].Stop();
         }
         for (int i = 0; i < monsterActivatables.Length; i++)
