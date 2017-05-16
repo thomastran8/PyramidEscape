@@ -30,7 +30,7 @@ public class Boss : Weapon_Mummy {
 				audios[4].Play();
 				foot = 0;
 			}
-			yield return new WaitForSeconds(1f);
+			yield return new WaitForSeconds(1.4f);
 		}
 	}
 
