@@ -88,7 +88,7 @@ public class AudioManager : MonoBehaviour {
 		case 0:
 			audios [5].Play ();
 			break;
-		case 1:
+        case 1:
 			audios [5].Stop ();
 			break;
 		
@@ -105,10 +105,15 @@ public class AudioManager : MonoBehaviour {
         {
             case 1:
                 audios[2].mute = true;
-                audios[6].Play();
+                audios[6].Play();//Wind
+                audios[7].Play();//Desert
                 break;
             case 2:
                 audios[2].mute = false;
+                audios[6].Stop();//Wind
+                audios[8].Play();//Entrance
+                break;
+            case 3:
                 audios[6].Stop();
                 break;
             case 7:
