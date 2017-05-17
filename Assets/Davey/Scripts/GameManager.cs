@@ -92,7 +92,11 @@ public class GameManager : MonoBehaviour {
 			item.SetActive (false);
 		}
 		pauseText.GetComponent<Text>().color = new Color (0,0,0,0);
-		isPaused = false;
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.lockState = CursorLockMode.Confined;
+        //Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+        isPaused = false;
 	}
 
 	public void pause() {
@@ -101,8 +105,8 @@ public class GameManager : MonoBehaviour {
 		}
 		pauseText.GetComponent<Text>().color = new Color (255,255,255,255);
 		Cursor.lockState = CursorLockMode.None;
-		Cursor.lockState = CursorLockMode.None;
-		isPaused = true;
+        Cursor.visible = true;
+        isPaused = true;
 		Time.timeScale = 0;
 	}
 
