@@ -25,7 +25,7 @@ public class PlayerMovement : MonoBehaviour {
 	private float movementTime;
 
 	// Player look
-	private float mouseSensitivity = 100.0f;
+	private float mouseSensitivity = 1000.0f;
 	private float clampAngle = 80.0f;
 	private float rotY = 0.0f;
 	private float rotX = 0.0f;
@@ -80,6 +80,7 @@ public class PlayerMovement : MonoBehaviour {
         PlayerCrouchCrawl();
         if (jumpTimer > 0.0f)
             jumpTimer -= Time.deltaTime;
+        PlayerLook();
     }
 
 	void FixedUpdate()
@@ -89,7 +90,6 @@ public class PlayerMovement : MonoBehaviour {
 		}
 
 		PlayerMove();
-		PlayerLook();
 		PlayerBob();
 	}
 
