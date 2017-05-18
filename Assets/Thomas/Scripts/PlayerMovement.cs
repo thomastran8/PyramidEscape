@@ -25,7 +25,7 @@ public class PlayerMovement : MonoBehaviour {
 	private float movementTime;
 
 	// Player look
-	private float mouseSensitivity = 100.0f;
+	private float mouseSensitivity = 2.0f;
 	private float clampAngle = 80.0f;
 	private float rotY = 0.0f;
 	private float rotX = 0.0f;
@@ -80,7 +80,7 @@ public class PlayerMovement : MonoBehaviour {
         PlayerCrouchCrawl();
         if (jumpTimer > 0.0f)
             jumpTimer -= Time.deltaTime;
-        PlayerLook();
+
     }
 
 	void FixedUpdate()
@@ -88,7 +88,7 @@ public class PlayerMovement : MonoBehaviour {
 		if (!alive) {
 			return;
 		}
-
+		PlayerLook();
 		PlayerMove();
 		PlayerBob();
 	}
@@ -118,8 +118,8 @@ public class PlayerMovement : MonoBehaviour {
 		float mouseY = -Input.GetAxis("Mouse Y");
 
 		// Get the difference per tick in mouse movement
-		rotY += mouseX * mouseSensitivity * Time.deltaTime;
-		rotX += mouseY * mouseSensitivity * Time.deltaTime;
+		rotY += mouseX * mouseSensitivity;
+		rotX += mouseY * mouseSensitivity;
 
 		// Lock the up and down look
 		rotX = Mathf.Clamp(rotX, -clampAngle, clampAngle);
