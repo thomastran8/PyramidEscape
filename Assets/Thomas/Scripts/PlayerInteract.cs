@@ -41,6 +41,14 @@ public class PlayerInteract : MonoBehaviour {
             {
                 interactText.text = "Treasure Chest";
             }
+            else if (interactInfoRay.transform.name.Contains("Big O' Bottle O' Spicy Sauce"))
+            {
+                interactText.text = "Big O' Bottle O' Spicy Sauce";
+            }
+            else if (interactInfoRay.transform.name.Contains("Timmy"))
+            {
+                interactText.text = "Timmy";
+            }
         }
         else
         {
