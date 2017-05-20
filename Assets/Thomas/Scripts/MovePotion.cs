@@ -25,7 +25,10 @@ public class MovePotion : MonoBehaviour {
 
     void OnTriggerEnter(Collider other)
     {
-        Instantiate(oilExplosion, transform.position, Quaternion.identity);
-        Destroy(gameObject);
+        if (!other.gameObject.transform.name.Contains("FireExplosion"))
+        {
+            Instantiate(oilExplosion, transform.position, Quaternion.identity);
+            Destroy(gameObject);
+        }
     }
 }
