@@ -63,9 +63,6 @@ public class GameManager : MonoBehaviour {
     }
 
     public void respawn(){
-        foreach (GameObject item in pauseItems) {
-            item.SetActive(true);
-        }
         SceneManager.LoadScene (SceneManager.GetActiveScene ().buildIndex);
 	}
 
@@ -119,9 +116,6 @@ public class GameManager : MonoBehaviour {
 
 	public void backToMainMenu() {
 		Debug.Log ("Main menu");
-        foreach (GameObject item in pauseItems) {
-            item.SetActive(true);
-        }
         SceneManager.LoadScene (0);
 	}
 }
