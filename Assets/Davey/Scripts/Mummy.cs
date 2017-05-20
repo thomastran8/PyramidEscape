@@ -38,6 +38,9 @@ public class Mummy : MonoBehaviour
     protected float deathTime = 5f; // time between start of death animation and destroy
     protected float damageTime = 1f; //Time of damage animation to do nothing
 
+    protected float takeDamageTimer;        // Keeps track if mummy can take damage again
+    protected float takeDamageTime = 0.1f;  // The amount of time before the mummy can take damage
+
 
     private float crouchMultiplier = 1.5f;
     private float crawlMultiplier = 2.0f;
@@ -61,6 +64,7 @@ public class Mummy : MonoBehaviour
         player = GameManager.player;
         anim.updateMode = AnimatorUpdateMode.AnimatePhysics;
 
+        takeDamageTimer = takeDamageTime;
     }
 
     protected virtual void Update() {
@@ -113,6 +117,9 @@ public class Mummy : MonoBehaviour
         else {
             lostPlayer();
         }//Too far so stay idle
+
+        if (takeDamageTimer >= 0.0f)
+            takeDamageTimer -= Time.deltaTime;
     }
 
     /* 
@@ -296,14 +303,17 @@ public class Mummy : MonoBehaviour
 
     void OnTriggerEnter(Collider other) {
         if (health > 0) {
-            if (other.gameObject.name.Contains("FireExplosion")) {
+            if (other.gameObject.name.Contains("FireExplosion") && takeDamageTimer <= 0.0f) {
                 health--;
+                Debug.Log("HITBYEXPLSION");
                 if (health <= 0) {
                     StartCoroutine("Death");
                 }
                 else {
                     StartCoroutine("Damaged");
                 }
+
+                takeDamageTimer = takeDamageTime;
             }
            
         }
