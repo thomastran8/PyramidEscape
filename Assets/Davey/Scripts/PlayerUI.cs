@@ -105,7 +105,7 @@ public class PlayerUI : MonoBehaviour {
         StartCoroutine("Hit");
         hp -= damage;
         UpdateUI ();
-		if (hp == 0) {
+		if (hp <= 0) {
             Death();
 			this.gameObject.GetComponent<PlayerMovement> ().alive = false;
 			return true;
