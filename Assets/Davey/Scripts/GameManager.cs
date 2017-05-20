@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour {
 	static public bool noCheckpoint = true;
     private static GameManager instance;
 
+
     private void Awake() {
 		if (instance != null && instance != this || SceneManager.GetActiveScene().name == "MainMenu") {
             Destroy(this.gameObject);
@@ -28,7 +29,6 @@ public class GameManager : MonoBehaviour {
 
 	static public void nextLevel() {
 		
-		Debug.Log ("Moving to next level");
 		noCheckpoint = true;
 		int nextScene = (SceneManager.GetActiveScene ().buildIndex + 1);
 		SceneManager.LoadScene(nextScene);
@@ -42,10 +42,12 @@ public class GameManager : MonoBehaviour {
 	private void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
 		if (scene.buildIndex == 0) {
 			Destroy (this.gameObject);
-			Destroy (this);
+            SceneManager.sceneLoaded -= OnSceneLoaded;
+            this.enabled = false;
 
 			return;
 		}
+
 		setPause (); // remove pause text
 		player.GetComponent<Transform>().position = spawn;
         player.GetComponent<Transform>().rotation = spawnRotation;
@@ -61,15 +63,24 @@ public class GameManager : MonoBehaviour {
     }
 
     public void respawn(){
-		SceneManager.LoadScene (SceneManager.GetActiveScene ().buildIndex);
+        foreach (GameObject item in pauseItems) {
+            item.SetActive(true);
+        }
+        SceneManager.LoadScene (SceneManager.GetActiveScene ().buildIndex);
 	}
 
-	public void setPause() {
-		pauseText = GameObject.Find("Pause text");
-		pauseItems = GameObject.FindGameObjectsWithTag ("Pause Item");
-		isPaused = false;
-		unpause();
-	}
+    public void setPause() {
+
+
+            pauseText = GameObject.Find("Pause text");
+            pauseItems = GameObject.FindGameObjectsWithTag("Pause Item");
+
+            isPaused = false;
+            unpause();
+
+
+    }
+
 
     // Update is called once per frame
     void Update() {
@@ -81,9 +92,6 @@ public class GameManager : MonoBehaviour {
                 pause();
             }
         }
-        if (Input.GetKeyDown(KeyCode.R)) {
-			SceneManager.LoadScene((SceneManager.GetActiveScene().buildIndex + 1) % Application.levelCount);
-        }
     }
 
 	public void unpause() {
@@ -94,7 +102,6 @@ public class GameManager : MonoBehaviour {
 		pauseText.GetComponent<Text>().color = new Color (0,0,0,0);
         Cursor.lockState = CursorLockMode.None;
         Cursor.lockState = CursorLockMode.Confined;
-        //Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         isPaused = false;
 	}
@@ -112,6 +119,9 @@ public class GameManager : MonoBehaviour {
 
 	public void backToMainMenu() {
 		Debug.Log ("Main menu");
-		SceneManager.LoadScene (0);
+        foreach (GameObject item in pauseItems) {
+            item.SetActive(true);
+        }
+        SceneManager.LoadScene (0);
 	}
 }
