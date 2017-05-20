@@ -7,6 +7,8 @@ Fire Potion Asset:
 Kang
 
 Unity Asset Store:
+Horror SFX - https://www.assetstore.unity3d.com/en/#!/content/32834
+Fantasy SFX- https://www.assetstore.unity3d.com/en/#!/content/32833
 Desert Kits 64 Sample - https://www.assetstore.unity3d.com/en/#!/content/86482
 Decrepit Dungeon LITE - https://www.assetstore.unity3d.com/en/#!/content/33936
 Simple Torch - https://www.assetstore.unity3d.com/en/#!/content/7275
