@@ -305,7 +305,6 @@ public class Mummy : MonoBehaviour
         if (health > 0) {
             if (other.gameObject.name.Contains("FireExplosion") && takeDamageTimer <= 0.0f) {
                 health--;
-                Debug.Log("HITBYEXPLSION");
                 if (health <= 0) {
                     StartCoroutine("Death");
                 }
