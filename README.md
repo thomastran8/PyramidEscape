@@ -1,25 +1,39 @@
 # PyramidEscape
 
-Programmers:
+## Programmers
 Thomas Tran, Davey Jay Belliss, Joshua Heideman
 
-Fire Potion Asset:
-Kang
+## Models & VFX
+1. Fire Potion - Khang Nguyen
 
-Unity Asset Store:
-Horror SFX - https://www.assetstore.unity3d.com/en/#!/content/32834
-Fantasy SFX- https://www.assetstore.unity3d.com/en/#!/content/32833
-Desert Kits 64 Sample - https://www.assetstore.unity3d.com/en/#!/content/86482
-Decrepit Dungeon LITE - https://www.assetstore.unity3d.com/en/#!/content/33936
-Simple Torch - https://www.assetstore.unity3d.com/en/#!/content/7275
-Rock 01 - https://www.assetstore.unity3d.com/en/#!/content/28673
-Animated Medieval trap - https://www.assetstore.unity3d.com/en/#!/content/6670
-Ambient Sample Pack - https://www.assetstore.unity3d.com/en/#!/content/3765
+2. Treasure Room Monologue - ...
 
-Font:
-Hieroglify font — Created in 2000 by Barmee - http://www.fontspace.com/barmee/hieroglify
+3. Desert Kits 64 Sample
+https://www.assetstore.unity3d.com/en/#!/content/86482
 
-# Audio Sources:
+4. Decrepit Dungeon LITE
+https://www.assetstore.unity3d.com/en/#!/content/33936
+
+5. Simple Torch
+https://www.assetstore.unity3d.com/en/#!/content/7275
+
+6. Rock 01
+https://www.assetstore.unity3d.com/en/#!/content/28673
+
+7. Animated Medieval trap
+https://www.assetstore.unity3d.com/en/#!/content/6670
+
+8. Fire Explosion VFX
+https://www.assetstore.unity3d.com/en/#!/content/48795
+
+9. Treasure Chest - Epic
+https://www.assetstore.unity3d.com/en/#!/content/3930
+
+## Fonts
+1. Hieroglify font — Created in 2000 by Barmee
+http://www.fontspace.com/barmee/hieroglify
+
+## Audio Sources:
 1. Various Bass Riffs - Robert Zuniga
 
 2. Various Guitar Riffs - Davey Jay Belliss
@@ -47,3 +61,12 @@ https://www.freesound.org/people/ertfelda/sounds/243699/
 
 10. Metal Gate Open_Close_Groan.wav - Cell31_Sound_Productions
 https://www.freesound.org/people/Cell31_Sound_Productions/sounds/329955/
+
+11. Horror SFX
+https://www.assetstore.unity3d.com/en/#!/content/32834
+
+12. Fantasy SFX
+https://www.assetstore.unity3d.com/en/#!/content/32833
+
+13. Ambient Sample Pack
+https://www.assetstore.unity3d.com/en/#!/content/3765
